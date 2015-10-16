@@ -1,6 +1,7 @@
 console.log("this is a test")
 var catNameID = {};
 var catNames = [];
+var categoryList={};
 setTimeout(getCategoryNamesID, 4000);
 
 function getCategoryNamesID(){
@@ -12,6 +13,7 @@ function getCategoryNamesID(){
 			catName = catName.trim();
 			catNameID[catName] = catID;
 			catNames.push(catName);
+			categoryList[catName+catID]=$(this);
 		})
 	if(catNames.length===0){
 		var categories = document.getElementsByClassName("SSC_Editable");
@@ -26,8 +28,9 @@ function getCategoryNamesID(){
 	}
 	console.log("The first at name is " + catNames[0]);	
 	//create the select box and populate the options val=categoryID name=category name
-	var selectBox = "<select class='category_selector'></select>";
-	$('.Master_SearchBoxDiv').append(selectBox);
+	//the empty options tag is used as a placeholder
+	var selectBox = "<select class='category_selector'><option></option></select>";
+	$('#Master_Footer_StatusBar').append(selectBox);
 	var categorySelector = $('.category_selector');
 	
 	for (var index = 0; index < catNames.length; index++) {
@@ -36,7 +39,24 @@ function getCategoryNamesID(){
 		categorySelector.append(option);
 	}
 	
-		
+	//create the select2 combo box
+	$('head').append("<script src='//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.min.js'></script>");
+	$('.category_selector').select2({
+		placeholder: "Category Quick Select",
+		allowClear:true
+	});
+	//format it
+	$('.select2').css("left","1305px");
+	$('.select2').css("top","-827px");
+	$('.select2').css("position","absolute");
+	$('.select2-selection').css("border-color","#3b6e8f");	
+	
+	//add change event that will trigger the clicking of the category
+	$('.category_selector').on("change",function (e) {
+		var textSelected = $('.category_selector option:selected').text();
+		var valSelected = $('.category_selector option:selected').val();
+		categoryList[textSelected+valSelected].click();
+	})
 }	
 
 

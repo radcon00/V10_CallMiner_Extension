@@ -1,0 +1,12 @@
+/**
+ * Place your custom CSS styles here.
+ **/
+.category_selector{
+	position: relative;
+	float: right;
+	left: 650px;
+	height: 23px;
+	border: 3px solid #3b6e8f ;
+	
+	
+}
