@@ -5,7 +5,13 @@ var categoryList={};
 setTimeout(getCategoryNamesID, 4000);
 
 function getCategoryNamesID(){
-	//this pulls all of the name and id information for the categories
+	
+	//assign the getCategoryNameID function to the click event of the search tab click event 
+	$('#Master_Nav_Search').click(launchOnSearch);
+	//execute only if the tab selected is the search tab	
+	if ($('.Master_NavOneButton_Selected').attr("id")==="Master_Nav_Search") {
+		
+		//this pulls all of the name and id information for the categories
 	$('span').filter(".SSC_Editable").each(function(){
 			var catID = $(this).attr("categoryid");
 			var catName = $(this).attr("title");			
@@ -57,7 +63,19 @@ function getCategoryNamesID(){
 		var valSelected = $('.category_selector option:selected').val();
 		categoryList[textSelected+valSelected].click();
 	})
+	}
+	
 }	
+
+//this is passed to the click event for search to create the options for the select2 box
+function launchOnSearch(){
+	if ($('.category_selector').children('option').length===0) {
+		//we only initialize if it doesn't exist.
+		setTimeout(getCategoryNamesID, 4000);
+	}
+	
+
+}
 
 
 	
