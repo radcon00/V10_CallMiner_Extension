@@ -52,16 +52,25 @@ function getCategoryNamesID(){
 		allowClear:true
 	});
 	//format it
-	$('.select2').css("left","1305px");
-	$('.select2').css("top","-827px");
+	$('.select2').css("left","1303px");
+	$('.select2').css("top","-30px");
 	$('.select2').css("position","absolute");
+	$('.select2').css("width","330px");
 	$('.select2-selection').css("border-color","#3b6e8f");	
 	
 	//add change event that will trigger the clicking of the category
 	$('.category_selector').on("change",function (e) {
 		var textSelected = $('.category_selector option:selected').text();
 		var valSelected = $('.category_selector option:selected').val();
-		categoryList[textSelected+valSelected].click();
+		//running the alternate function to avoid the error the occurs when a category is updated.
+		alternateCategorySelector(valSelected);
+		//try {
+			//if this fails we will go go with the alternate method of looping through the list of categories and selecting the correct one by category id.
+			//categoryList[textSelected+valSelected].click();
+		//} catch (error) {
+			//alternateCategorySelector(valSelected);
+		//}
+		
 	})
 	}
 	
@@ -75,6 +84,17 @@ function launchOnSearch(){
 	}
 	
 
+}
+
+//alternate method of clicking the category. Used as a backup to the primary method in the event of an update to the category list. eg..a save.
+function alternateCategorySelector(catIDnumber){
+	$('span').filter(".SSC_Editable").each(function(){
+		
+		if ($(this).attr("categoryid")===catIDnumber) {
+			$(this).click();
+			return false;
+		}
+	});
 }
 
 
