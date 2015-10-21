@@ -44,7 +44,7 @@ function getCategoryNamesID(){
 		var option = "<option value=" + catNameID[name]+">"+name + "</option>";
 		categorySelector.append(option);
 	}
-	//create div to hold the select box and the custom pop up div that provides options based on the selection
+	//create div to hold the select box and the infobox div that provides options based on the selection
 	var usgeContainer = "<div id='usgeContainer'></div>";
 	var infoBox = "<div id='usgeInfoBox'></div>"
 	var leftprop = (($("#Master_Footer_StatusBar").width() - 330)+2) + "px";
@@ -57,6 +57,24 @@ function getCategoryNamesID(){
 		position: positionprop,
 		width: widthprop
 	}
+	//get images for the buttons
+	var imagePlus = chrome.extension.getURL("images/plus.png");
+	var imageMinus = chrome.extension.getURL("images/minus.png");
+	
+	var divusgeCatCount = "<div id='usgeCatCount'><span class='SB_Adv_Header rowFormat'>Category Call Count</span><div class='usgeCountContainer'><span id='usge_Count'>0</span></div></div>";
+	var divusgeCatView = "<div id='usgeCatView'><span class='SB_Adv_Header rowFormat'>View Category</span><div style='margin-top: 12px;' ><button id='usge_button' type='button' class='usgeButton' >Select Category</button></div></div>";
+	var divusgeCatSelecter = "<div id='usgeCatSelector'><span class='SB_Adv_Header rowFormat'>Filter by Category</span>"
+	                        +"<div><div class='usgeContainerPlusorMinus'> <button id='usge_button_plus' type='button' class='usgeButton positionInclude'>Include</button></div>" +
+							"<div class='usgeContainerPlusorMinus'> <button id='usge_button_minus' type='button' class='usgeButton positionExclude' >Exclude</button></div> </div>" 
+							 + "</div>";
+	
+	var divstyle = {
+		height: "33.3%"
+		
+	};
+	
+	
+	
 	$('#Master_Footer_StatusBar').append(usgeContainer);
 	$('#usgeContainer').css(props);
 	//create the select2 combo box
@@ -65,7 +83,7 @@ function getCategoryNamesID(){
 		placeholder: "Category Quick Select",
 		allowClear:true
 	});
-	//format it
+	//format it and also build the infoBox above the select box
 	//$('.select2').css("left","1303px");
 	$('.select2').css("top",topprop);
 	$('.select2').appendTo('#usgeContainer');
@@ -83,9 +101,30 @@ function getCategoryNamesID(){
 		"border-bottom": "0px",
 		visibility: "hidden"
 	});
+	$(divusgeCatCount).appendTo('#usgeInfoBox');
+	$(divusgeCatView).appendTo('#usgeInfoBox');
+	$(divusgeCatSelecter).appendTo('#usgeInfoBox');
+	//apply css
+	$('#usgeCatCount').css(divstyle);
+	$('#usgeCatView').css(divstyle);
+	$('#usgeCatSelector').css(divstyle);
 	
 	//add change event that will trigger the clicking of the category
 	$('.category_selector').on("change",function (e) {
+		var textSelected = $('.category_selector option:selected').text();
+		
+		if (textSelected !== "") {
+			var valSelected = $('.category_selector option:selected').val();
+		//running the alternate function to avoid the error the occurs when a category is updated.	
+			$('#usge_Count').text(getCallCount(valSelected));				
+			toggleInfoBox();
+			
+		}
+		
+	});
+	
+	//add click event to usge_button to view the category
+	$('#usge_button').on("click",function (e) {
 		var textSelected = $('.category_selector option:selected').text();
 		
 		if (textSelected !== "") {
@@ -96,12 +135,35 @@ function getCategoryNamesID(){
 		}
 		
 	});
-	
 	//this will close the infobox if it is open when the select two drop down is opened
 	$('.category_selector').on("select2:open",function (e){
 		if ($('#usgeInfoBox').css("visibility")==="visible") {
 			$('#usgeInfoBox').css("visibility","hidden");
 		}
+	});
+	//event handler for the exclude and include buttons
+	$('#usge_button_plus').on("click",function (e) {
+		var textSelected = $('.category_selector option:selected').text();
+		
+		if (textSelected !== "") {
+			var valSelected = $('.category_selector option:selected').val(); 
+			var plusElement = "#Search_CategoryFilterInclude" + valSelected
+			$(plusElement).click();
+		}
+		
+	});
+	
+	$('#usge_button_minus').on("click",function (e) {
+		var textSelected = $('.category_selector option:selected').text();
+		
+		if (textSelected !== "") {
+			var valSelected = $('.category_selector option:selected').val();
+			var minusElement = "#Search_CategoryFilterExclude" + valSelected
+			$(minusElement).click();
+		;		
+			
+		}
+		
 	});
 	
 	}
@@ -133,4 +195,11 @@ function toggleInfoBox(){
 	$('#usgeInfoBox').css("visibility")==="hidden" ? $('#usgeInfoBox').css("visibility","visible") : $('#usgeInfoBox').css("visibility","hidden");
 }
 
+//get the number of calls returned from the query for the category.
+function getCallCount(idnumber) {
+	var searchCatID = "#Search_CategoryFilterExclude"+idnumber;
+	var searchCatObject = $(searchCatID).next();
+	var result = searchCatObject.text();
+	return result;
+}
 	
