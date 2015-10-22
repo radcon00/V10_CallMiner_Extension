@@ -46,16 +46,14 @@ function getCategoryNamesID(){
 	}
 	//create div to hold the select box and the infobox div that provides options based on the selection
 	var usgeContainer = "<div id='usgeContainer'></div>";
-	var infoBox = "<div id='usgeInfoBox'></div>"
-	var leftprop = (($("#Master_Footer_StatusBar").width() - 330)+2) + "px";
+	var infoBox = "<div id='usgeInfoBox'></div>"	
 	var topprop = "-" + ($("#Master_Footer_StatusBar").height() + 6) + "px";
 	var positionprop = "relative";
 	var widthprop = "330px";
-	var props = {
-		left: leftprop,
-		top: topprop,
+	var props = {		
 		position: positionprop,
-		width: widthprop
+		width: widthprop,
+		float: "right"
 	}
 	//get images for the buttons
 	var imagePlus = chrome.extension.getURL("images/plus.png");
