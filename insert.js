@@ -1,8 +1,17 @@
-console.log("this is a test")
+
 var catNameID = {};
 var catNames = [];
 var categoryList={};
 setTimeout(getCategoryNamesID, 4000);
+
+
+//customer filter used to search text without case-sensitivity
+$.expr[":"].containsNoCase = function(el, i, m) {
+    var search = m[3];
+    if (!search) return false;
+    return new RegExp(search, "i").test($(el).text());
+};
+
 
 function getCategoryNamesID(){
 	
@@ -32,7 +41,7 @@ function getCategoryNamesID(){
 		}		
 		
 	}
-	console.log("The first at name is " + catNames[0]);	
+	//console.log("The first at name is " + catNames[0]);	
 	//create the select box and populate the options val=categoryID name=category name
 	//the empty options tag is used as a placeholder
 	var selectBox = "<select class='category_selector'><option></option></select>";
@@ -56,18 +65,19 @@ function getCategoryNamesID(){
 		float: "right"
 	}
 	//get images for the buttons
-	var imagePlus = chrome.extension.getURL("images/plus.png");
-	var imageMinus = chrome.extension.getURL("images/minus.png");
+	//var imagePlus = chrome.extension.getURL("images/plus.png");
+	//var imageMinus = chrome.extension.getURL("images/minus.png");
 	
 	var divusgeCatCount = "<div id='usgeCatCount'><span class='SB_Adv_Header rowFormat'>Category Call Count</span><div class='usgeCountContainer'><span id='usge_Count'>0</span></div></div>";
-	var divusgeCatView = "<div id='usgeCatView'><span class='SB_Adv_Header rowFormat'>View Category</span><div style='margin-top: 12px;' ><button id='usge_button' type='button' class='usgeButton' >Select Category</button></div></div>";
+	var divusgeCatView = "<div id='usgeCatView'><span class='SB_Adv_Header rowFormat'>View Category</span><div style='margin-top: 6px;' ><button id='usge_button' type='button' class='usgeButton' >Select Category</button></div></div>";
 	var divusgeCatSelecter = "<div id='usgeCatSelector'><span class='SB_Adv_Header rowFormat'>Filter by Category</span>"
 	                        +"<div><div class='usgeContainerPlusorMinus'> <button id='usge_button_plus' type='button' class='usgeButton positionInclude'>Include</button></div>" +
 							"<div class='usgeContainerPlusorMinus'> <button id='usge_button_minus' type='button' class='usgeButton positionExclude' >Exclude</button></div> </div>" 
 							 + "</div>";
+	var divusgeFilterAttr = "<div id='divusgeFilterAttr'><span class='SB_Adv_Header rowFormat'>Filter Attribute</span><input id='usge_attrFilter' class='usge_attr' type='search' results='5' name='s'></div>";							 
 	
 	var divstyle = {
-		height: "33.3%"
+		height: "25%"
 		
 	};
 	
@@ -102,10 +112,12 @@ function getCategoryNamesID(){
 	$(divusgeCatCount).appendTo('#usgeInfoBox');
 	$(divusgeCatView).appendTo('#usgeInfoBox');
 	$(divusgeCatSelecter).appendTo('#usgeInfoBox');
+	$(divusgeFilterAttr).appendTo('#usgeInfoBox')
 	//apply css
 	$('#usgeCatCount').css(divstyle);
 	$('#usgeCatView').css(divstyle);
 	$('#usgeCatSelector').css(divstyle);
+	$('#divusgeFilterAttr').css(divstyle);
 	
 	//add change event that will trigger the clicking of the category
 	$('.category_selector').on("change",function (e) {
@@ -139,7 +151,7 @@ function getCategoryNamesID(){
 			$('#usgeInfoBox').css("visibility","hidden");
 		}
 	});
-	//event handler for the exclude and include buttons
+	//event handlers for the exclude and include buttons
 	$('#usge_button_plus').on("click",function (e) {
 		var textSelected = $('.category_selector option:selected').text();
 		
@@ -162,6 +174,13 @@ function getCategoryNamesID(){
 			
 		}
 		
+	});
+	//event handler for attribute filter button
+	$('#usge_attrFilter').keyup(function name() {
+		
+		var search = $(this).val();
+		$(".A_Attribute_Test").show();
+		if(search) $(".A_Attribute_Test").not(":containsNoCase("+ search +")").hide();
 	});
 	
 	}
