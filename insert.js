@@ -183,7 +183,18 @@ function getCategoryNamesID(){
 		if(search) $(".A_Attribute_Test").not(":containsNoCase("+ search +")").hide();
 	});
 	
-	}
+	//event handler for discover button to hide the category select2 box if clicked
+	$('#Master_Nav_Discover').click(function () {
+		toggleVisiblity();
+		if($('#usgeInfoBox').css("visibility")!=="hidden") $('#usgeInfoBox').css("visibility","hidden");
+	});
+	
+	//event handler for the reports tab to hide the category select2 box
+	$('#Master_Nav_Report').click(function () {
+		toggleVisiblity();
+		if($('#usgeInfoBox').css("visibility")!=="hidden") $('#usgeInfoBox').css("visibility","hidden");
+	});
+  }
 	
 }	
 
@@ -193,7 +204,9 @@ function launchOnSearch(){
 		//we only initialize if it doesn't exist.
 		setTimeout(getCategoryNamesID, 4000);
 	}
-	
+	else{
+		$('.select2').show();
+	}
 
 }
 
@@ -218,5 +231,11 @@ function getCallCount(idnumber) {
 	var searchCatObject = $(searchCatID).next();
 	var result = searchCatObject.text();
 	return result;
+}
+
+//toogle the visiblity of the select2 box
+function toggleVisiblity() {
+	if($('.select2').length===1 && $('.select2').css("visibility")==="visible")  $('.select2').hide();
+	
 }
 	
