@@ -185,6 +185,14 @@ function getCategoryNamesID(){
 		if(search) $(".A_Attribute_Test").not(":containsNoCase("+ search +")").hide();
 	});
 	
+	//event handler for attribute filter button that will respond to the click event that clears the data
+	$('#usge_attrFilter').click(function name() {
+		
+		//var search = $(this).val();
+		$(".A_Attribute_Test").show();
+		//if(search) $(".A_Attribute_Test").not(":containsNoCase("+ search +")").hide();
+	});
+	
 	//event handler for discover button to hide the category select2 box if clicked
 	$('#Master_Nav_Discover').click(function () {
 		toggleVisiblity();
