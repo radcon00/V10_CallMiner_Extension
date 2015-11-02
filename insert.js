@@ -157,7 +157,8 @@ function getCategoryNamesID(){
 		
 		if (textSelected !== "") {
 			var valSelected = $('.category_selector option:selected').val(); 
-			var plusElement = "#Search_CategoryFilterInclude" + valSelected
+			//chose the include button based on the selected tab. Use search filter if on search tab and score filter if you are on score tab
+			var plusElement = $('.Master_NavOneButton_Selected').attr("id")==="Master_Nav_Search" ? "#Search_CategoryFilterInclude" + valSelected : "#Score_CategoryFilterInclude" + valSelected;
 			$(plusElement).click();
 		}
 		
@@ -168,7 +169,8 @@ function getCategoryNamesID(){
 		
 		if (textSelected !== "") {
 			var valSelected = $('.category_selector option:selected').val();
-			var minusElement = "#Search_CategoryFilterExclude" + valSelected
+			//chose the exclude button based on the selected tab. Use search filter if on search tab and score filter if you are on score tab
+			var minusElement = $('.Master_NavOneButton_Selected').attr("id")==="Master_Nav_Search" ? "#Search_CategoryFilterExclude" + valSelected :"#Score_CategoryFilterExclude" + valSelected ;
 			$(minusElement).click();
 		;		
 			
