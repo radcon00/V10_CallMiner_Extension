@@ -216,6 +216,7 @@ function getCategoryNamesID(){
 			var currentVal = $('#SearchActionString').val();
 			$('#SearchActionString').val(currentVal + " " + catSyntax );	
 			toggleInfoBox();
+			$('#SearchActionString').focus();
 		}
 		
 	});
