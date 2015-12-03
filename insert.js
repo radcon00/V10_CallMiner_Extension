@@ -221,6 +221,24 @@ function getCategoryNamesID(){
 		
 	});
 	
+	//event handler for the search box key up event. We are going to add shortcut syntax to the text box
+	$('#SearchActionString').keyup(function name() {
+		
+		var searchText = $(this).val();
+		var operators = ["NOT BEFORE","NOT AFTER","NOT NEAR","BEFORE","AFTER","NEAR"];
+		var shortcuts = ["!>","!<","!=",">","<","="];
+		for (var i = 0; i < shortcuts.length; i++) {
+			var shortcut = shortcuts[i];
+			var re = new RegExp(shortcut,'g');
+			if (searchText.match(re)) {
+				searchText = searchText.replace(shortcut,operators[i])
+				$(this).val(searchText);
+				break;
+			}
+			
+		}
+	});
+	
   }
 	
 }	
