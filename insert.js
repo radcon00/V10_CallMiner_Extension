@@ -69,7 +69,7 @@ function getCategoryNamesID(){
 	//var imageMinus = chrome.extension.getURL("images/minus.png");
 	
 	var divusgeCatCount = "<div id='usgeCatCount'><span class='SB_Adv_Header rowFormat'>Category Call Count</span><div class='usgeCountContainer'><span id='usge_Count'>0</span></div></div>";
-	var divusgeCatView = "<div id='usgeCatView'><span class='SB_Adv_Header rowFormat'>View Category</span><div style='margin-top: 6px;' ><button id='usge_button' type='button' class='usgeButton' >Select Category</button></div></div>";
+	var divusgeCatView = "<div id='usgeCatView'><span class='SB_Adv_Header rowFormat'>View Category or Add to Search</span><div style='margin-top: 6px;' ><div style='float: left; width: 50%; position: relative;'><button id='usge_button' type='button' class='usgeButton' >Select Category</button></div><div style='float: right; width: 50%; position: relative;'><button id='usge_button_add' type='button' class='usgeButton2' >Use in Search</button></div></div></div>";
 	var divusgeCatSelecter = "<div id='usgeCatSelector'><span class='SB_Adv_Header rowFormat'>Filter by Category</span>"
 	                        +"<div><div class='usgeContainerPlusorMinus'> <button id='usge_button_plus' type='button' class='usgeButton positionInclude'>Include</button></div>" +
 							"<div class='usgeContainerPlusorMinus'> <button id='usge_button_minus' type='button' class='usgeButton positionExclude' >Exclude</button></div> </div>" 
@@ -204,6 +204,22 @@ function getCategoryNamesID(){
 		toggleVisiblity();
 		if($('#usgeInfoBox').css("visibility")!=="hidden") $('#usgeInfoBox').css("visibility","hidden");
 	});
+	
+	//event handler for the use in search button. It will be used to add category syntax to the text box
+	$('#usge_button_add').on("click",function (e) {
+		var textSelected = $('.category_selector option:selected').text();
+		
+		if (textSelected !== "") {
+			var categoryGroup = getCategoryGroup();
+		//create the category search syntax then append it to the search box.
+			var catSyntax = "CAT:["+ categoryGroup +"."+textSelected +"]";
+			var currentVal = $('#SearchActionString').val();
+			$('#SearchActionString').val(currentVal + " " + catSyntax );	
+			toggleInfoBox();
+		}
+		
+	});
+	
   }
 	
 }	
@@ -247,5 +263,18 @@ function getCallCount(idnumber) {
 function toggleVisiblity() {
 	if($('.select2').length===1 && $('.select2').css("visibility")==="visible")  $('.select2').hide();
 	
+}
+
+//returns the category group that the category belongs to
+function getCategoryGroup(){
+	var valSelected = $('.category_selector option:selected').val();
+	var plusElementToSearchWith = "#Search_CategoryFilterInclude" + valSelected ;
+	var item = $(plusElementToSearchWith); 
+	var txt = item.parent().parent().parent().prev().text().trim(); //this will navigate to the correct column header in the sidebar and pull its text
+	var arr = txt.split(" "); //split the text into a string array
+	arr.pop(); //discard the final item in the array it is normally the number of calls for that section
+	var result = arr.join(" ").trim(); //this will discard the unnecessary white space and completes the process.
+	
+	return result;
 }
 	
