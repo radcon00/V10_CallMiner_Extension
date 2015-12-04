@@ -251,12 +251,15 @@ function getCategoryNamesID(){
 		var searchText = $(this).val();
 		var operators = ["NOT BEFORE","NOT AFTER","NOT NEAR","BEFORE","AFTER","NEAR"];
 		var shortcuts = ["!>","!<","!=",">","<","="];
+		var tempPosition = $(this).prop('selectionStart');
 		for (var i = 0; i < shortcuts.length; i++) {
 			var shortcut = shortcuts[i];
 			var re = new RegExp(shortcut,'g');
 			if (searchText.match(re)) {
 				searchText = searchText.replace(shortcut,operators[i])
 				$(this).val(searchText);
+				tempPosition +=  (operators[i].length - shortcut.length)
+				$(this).setCursorPosition(tempPosition);
 				break;
 			}
 			
