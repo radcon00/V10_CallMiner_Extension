@@ -2,6 +2,8 @@
 var catNameID = {};
 var catNames = [];
 var categoryList={};
+var caretPostion=null;
+
 setTimeout(getCategoryNamesID, 4000);
 
 
@@ -12,6 +14,21 @@ $.expr[":"].containsNoCase = function(el, i, m) {
     return new RegExp(search, "i").test($(el).text());
 };
 
+//function used to set the cursor position of an element to a specific character
+$.fn.setCursorPosition = function(pos) {
+  this.each(function(index, elem) {
+    if (elem.setSelectionRange) {
+      elem.setSelectionRange(pos, pos);
+    } else if (elem.createTextRange) {
+      var range = elem.createTextRange();
+      range.collapse(true);
+      range.moveEnd('character', pos);
+      range.moveStart('character', pos);
+      range.select();
+    }
+  });
+  return this;
+};
 
 function getCategoryNamesID(){
 	
@@ -205,7 +222,7 @@ function getCategoryNamesID(){
 		if($('#usgeInfoBox').css("visibility")!=="hidden") $('#usgeInfoBox').css("visibility","hidden");
 	});
 	
-	//event handler for the use in search button. It will be used to add category syntax to the text box
+	//event handler for the "use in search" button. It will be used to add category syntax to the text box
 	$('#usge_button_add').on("click",function (e) {
 		var textSelected = $('.category_selector option:selected').text();
 		
@@ -214,9 +231,16 @@ function getCategoryNamesID(){
 		//create the category search syntax then append it to the search box.
 			var catSyntax = "CAT:["+ categoryGroup +"."+textSelected +"]";
 			var currentVal = $('#SearchActionString').val();
-			$('#SearchActionString').val(currentVal + " " + catSyntax );	
+				
 			toggleInfoBox();
 			$('#SearchActionString').focus();
+			if (caretPostion) {
+				var newTxt = currentVal.slice(0,caretPostion) + catSyntax + currentVal.slice(caretPostion,currentVal.length); //set the position of the catSyntax within existing text
+				$('#SearchActionString').val(newTxt); 
+				$('#SearchActionString').setCursorPosition(caretPostion + catSyntax.length);//adjust the curser position by adjusting by the amount of the inserted text
+				return;
+			}
+			$('#SearchActionString').val(currentVal + " " + catSyntax );
 		}
 		
 	});
@@ -239,6 +263,11 @@ function getCategoryNamesID(){
 		}
 	});
 	
+	//event handler for the search box focus out event. It will set the caretposition variable used in the function that adds the category syntax to the search box.
+	$('#SearchActionString').focusout(function name() {
+		
+		caretPostion = $(this).prop('selectionStart');
+	});
   }
 	
 }	
@@ -296,4 +325,5 @@ function getCategoryGroup(){
 	
 	return result;
 }
+
 	
