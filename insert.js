@@ -126,7 +126,9 @@ function getCategoryNamesID(){
 		"border-bottom": "0px",
 		visibility: "hidden"
 	});
-	$(divusgeCatCount).appendTo('#usgeInfoBox');
+	
+	//this if elimanates the duplicate infobox entries bug. It only alows the info box info to be loaded once.
+	if($('.usgeCatCount').length===0){$(divusgeCatCount).appendTo('#usgeInfoBox');
 	$(divusgeCatView).appendTo('#usgeInfoBox');
 	$(divusgeCatSelecter).appendTo('#usgeInfoBox');
 	$(divusgeFilterAttr).appendTo('#usgeInfoBox')
@@ -244,6 +246,9 @@ function getCategoryNamesID(){
 		}
 		
 	});
+	
+	}
+	
 	
 	//event handler for the search box key up event. We are going to add shortcut syntax to the text box
 	$('#SearchActionString').keyup(function name() {
