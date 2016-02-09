@@ -241,8 +241,9 @@ function getCategoryNamesID(){
 				$('#SearchActionString').val(newTxt); 
 				$('#SearchActionString').setCursorPosition(caretPostion + catSyntax.length);//adjust the curser position by adjusting by the amount of the inserted text
 				return;
-			}
-			$('#SearchActionString').val(currentVal + " " + catSyntax );
+			}			
+			$('#SearchActionString').val(currentVal.length>0 ? currentVal + " " + catSyntax : catSyntax ); //check if the text box is blank so you can position the new text correctly.
+			//$('#SearchActionString').trigger('change');
 		}
 		
 	});
@@ -254,13 +255,13 @@ function getCategoryNamesID(){
 	$('#SearchActionString').keyup(function name() {
 		
 		var searchText = $(this).val();
-		var operators = ["NOT BEFORE","NOT AFTER","NOT NEAR","BEFORE","AFTER","NEAR"];
-		var shortcuts = ["!>","!<","!=",">","<","="];
+		var operators = ["NOT BEFORE","NOT AFTER","NOT NEAR","BEFORE","AFTER","NEAR","OR"];
+		var shortcuts = ["!>","!<","!=",">","<","=","^"];
 		var tempPosition = $(this).prop('selectionStart');
 		for (var i = 0; i < shortcuts.length; i++) {
 			var shortcut = shortcuts[i];
-			var re = new RegExp(shortcut,'g');
-			if (searchText.match(re)) {
+			//var re = new RegExp(shortcut,'g');
+			if (searchText.indexOf(shortcut) > -1) {
 				searchText = searchText.replace(shortcut,operators[i])
 				$(this).val(searchText);
 				tempPosition +=  (operators[i].length - shortcut.length)
