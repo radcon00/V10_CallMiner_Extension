@@ -56,3 +56,6 @@
 	background-color: azure;
 	margin-left: 10px;
 }
+span.select2-dropdown--above{
+	z-index: 10000;
+}

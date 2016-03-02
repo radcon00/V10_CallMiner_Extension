@@ -72,7 +72,7 @@ function getCategoryNamesID(){
 	}
 	//create div to hold the select box and the infobox div that provides options based on the selection
 	var usgeContainer = "<div id='usgeContainer'></div>";
-	var infoBox = "<div id='usgeInfoBox'></div>"	
+	var infoBox = "<div id='usgeInfoBox' style='background-color: white;'></div>"	
 	var topprop = "-" + ($("#Master_Footer_StatusBar").height() + 6) + "px";
 	var positionprop = "relative";
 	var widthprop = "330px";
