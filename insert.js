@@ -40,7 +40,7 @@ function getCategoryNamesID(){
 	if ($('.Master_NavOneButton_Selected').attr("id")==="Master_Nav_Search") {
 		
 		//this pulls all of the name and id information for the categories
-	$('span').filter(".SSC_Editable").each(function(){
+	$( "span[categoryID]" ).each(function(){
 			var catID = $(this).attr("categoryid");
 			var catName = $(this).attr("title");			
 			catName = catName.split(":")[1].split("Description")[0];
@@ -283,7 +283,7 @@ function getCategoryNamesID(){
 	//event handler for the select2 drop down to reload the category options if we try to open select2 and there are none.
 	$('.category_selector').on("select2:close",function(e) {
 		if ($('.category_selector').children('option').length<2) {
-			setOptions()
+			//refreshOptions()
 		}
 	});
   }
@@ -291,10 +291,10 @@ function getCategoryNamesID(){
 }	
 
 //use this function to execute the addition of the categories to the select box if it was not added when the screen loaded
-function setOptions() {
+function refreshOptions() {
 	
 	//loop through the DOM and collect the category data.
-	$('span').filter(".SSC_Editable").each(function(){
+	$( "span[categoryID]" ).each(function(){
 			var catID = $(this).attr("categoryid");
 			var catName = $(this).attr("title");			
 			catName = catName.split(":")[1].split("Description")[0];
