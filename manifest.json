@@ -24,10 +24,7 @@
   "content_scripts": [
     {
       "matches": [
-        "http://callminer.usgande.local/eureka/#/Search",
-        "http://callminer.usgande.local/eureka/#/Score",
-        "*://callminer.usgande.local/eureka/*"
-        
+        "<all_urls>"       
       ],
       "css": [
         "src/inject/inject.css",

@@ -31,7 +31,9 @@ $.fn.setCursorPosition = function(pos) {
 };
 
 function getCategoryNamesID(){
-	
+	if ($('#SearchActionString').length<1) {
+		return;
+	}
 	//assign the getCategoryNameID function to the click event of the search tab click event 
 	$('#Master_Nav_Search').click(launchOnSearch);
 	//execute only if the tab selected is the search tab	
@@ -277,10 +279,52 @@ function getCategoryNamesID(){
 		
 		caretPostion = $(this).prop('selectionStart');
 	});
+	
+	//event handler for the select2 drop down to reload the category options if we try to open select2 and there are none.
+	$('.category_selector').on("select2:close",function(e) {
+		if ($('.category_selector').children('option').length<2) {
+			
+		}
+	});
   }
 	
 }	
 
+//use this function to execute the addition of the categories to the select box if it was not added when the screen loaded
+function setOptions() {
+	
+	//loop through the DOM and collect the category data.
+	$('span').filter(".SSC_Editable").each(function(){
+			var catID = $(this).attr("categoryid");
+			var catName = $(this).attr("title");			
+			catName = catName.split(":")[1].split("Description")[0];
+			catName = catName.trim();
+			catNameID[catName] = catID;
+			catNames.push(catName);
+			categoryList[catName+catID]=$(this);
+		});
+	//push the data collected in the collection	
+	if(catNames.length===0){
+		var categories = document.getElementsByClassName("SSC_Editable");
+		for (var index = 0; index < categories.length; index++) {
+			var catID = categories[index].getAttribute("categoryid");
+			var catName = categories[index].getAttribute("title").split(":")[1].split("Description")[0].trim();
+			catNameID[catName] = catID;
+			catNames.push(catName);
+			
+		}		
+		
+	};
+	//append the options to the select box
+	var categorySelector = $('.category_selector');
+	
+	for (var index = 0; index < catNames.length; index++) {
+		var name = catNames[index];
+		var option = "<option value=" + catNameID[name]+">"+name + "</option>";
+		categorySelector.append(option);
+	};
+	
+}
 //this is passed to the click event for search to create the options for the select2 box
 function launchOnSearch(){
 	if ($('.category_selector').children('option').length===0) {
