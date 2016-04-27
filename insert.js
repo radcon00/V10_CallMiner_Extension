@@ -281,9 +281,9 @@ function getCategoryNamesID(){
 	});
 	
 	//event handler for the select2 drop down to reload the category options if we try to open select2 and there are none.
-	$('.category_selector').on("select2:close",function(e) {
+	$('.category_selector').on("select2:opening",function(e) {
 		if ($('.category_selector').children('option').length<2) {
-			//refreshOptions()
+			refreshOptions();
 		}
 	});
   }
