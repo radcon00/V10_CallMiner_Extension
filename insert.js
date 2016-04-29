@@ -31,7 +31,7 @@ $.fn.setCursorPosition = function(pos) {
 };
 
 function getCategoryNamesID(){
-	if ($('#SearchActionString').length<1) {
+	if ($('#SearchActionString').length<1 && $("a[id='Master_Nav_Discover']").length<1) {
 		return;
 	}
 	//assign the getCategoryNameID function to the click event of the search tab click event 
