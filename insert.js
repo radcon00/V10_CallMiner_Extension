@@ -1,6 +1,7 @@
 
 var catNameID = {};
 var catNames = [];
+var catParent=[];
 var categoryList={};
 var caretPostion=null;
 
@@ -48,6 +49,7 @@ function getCategoryNamesID(){
 			catNameID[catName] = catID;
 			catNames.push(catName);
 			categoryList[catName+catID]=$(this);
+			catParent.push(getCatParent($(this)));
 		})
 	if(catNames.length===0){
 		var categories = document.getElementsByClassName("SSC_Editable");
@@ -69,7 +71,8 @@ function getCategoryNamesID(){
 	
 	for (var index = 0; index < catNames.length; index++) {
 		var name = catNames[index];
-		var option = "<option value=" + catNameID[name]+">"+name + "</option>";
+		var folder_Name = "Folder: " + catParent[index];
+		var option = "<option value='" + catNameID[name]+"' title='"+ folder_Name + "'>"+name + "</option>";
 		categorySelector.append(option);
 	}
 	//create div to hold the select box and the infobox div that provides options based on the selection
@@ -302,6 +305,7 @@ function refreshOptions() {
 			catNameID[catName] = catID;
 			catNames.push(catName);
 			categoryList[catName+catID]=$(this);
+			catParent.push(getCatParent($(this)));
 		});
 	//push the data collected in the collection	
 	if(catNames.length===0){
@@ -320,7 +324,8 @@ function refreshOptions() {
 	
 	for (var index = 0; index < catNames.length; index++) {
 		var name = catNames[index];
-		var option = "<option value=" + catNameID[name]+">"+name + "</option>";
+		var folder_Name = "Folder:" + catParent[index];
+		var option = "<option value='" + catNameID[name]+"' title='"+ folder_Name + "'>"+name + "</option>";
 		categorySelector.append(option);
 	};
 	
@@ -377,6 +382,14 @@ function getCategoryGroup(){
 	var result = arr.join(" ").trim(); //this will discard the unnecessary white space and completes the process.
 	
 	return result;
+}
+
+function getCatParent($el) {
+	var childName = $el.parent().parent().attr('class').split(" ")[0];
+	var tempName = childName.split("-");
+	var f_Name = tempName[2]+"-"+tempName[3];
+	
+	return $("#"+f_Name).find('span[title]').text();
 }
 
 	
