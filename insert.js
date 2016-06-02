@@ -344,7 +344,7 @@ function launchOnSearch(){
 
 //alternate method of clicking the category. Used as a backup to the primary method in the event of an update to the category list. eg..a save.
 function alternateCategorySelector(catIDnumber){
-	$('span').filter(".SSC_Editable").each(function(){
+	$( "span[categoryID]" ).each(function(){
 		
 		if ($(this).attr("categoryid")===catIDnumber) {
 			$(this).click();
