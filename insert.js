@@ -157,6 +157,12 @@ function getCategoryNamesID(){
 		$('.prettyContainer').toggle();
 	});
 	
+	//pretty print text addition trigger on hover
+	$('#SearchActionString').mouseenter(function(e){
+		var prettyText = getPrettyText();
+		$(".prettyContent").empty();
+		$(".prettyContent").append(prettyText);
+	});
 	
 	//add change event that will trigger the clicking of the category
 	$('.category_selector').on("change",function (e) {
@@ -407,4 +413,20 @@ function getCatParent($el) {
 	return $("#"+f_Name).find('span[title]').text();
 }
 
+//creates pretty text, formats the search syntax
+function getPrettyText(){
+	var txt = $('#SearchActionString').val();
+	var matches = txt.match(/(\s[A-T]{3}\s[A-T]{4,6}:?\.?\d*\s)|([A-T]{4,6}:?\.?\d*\s)| OR /g);
+	if(matches===null){
+		return txt;
+	}
+	matches = Array.from(new Set(matches));
+	matches.forEach(function(entry){
+		var replace = "<br><br><span class='cuteSpan'>" +entry+ "</span><br><br>";
+		txt = txt.split(entry).join(replace);		
+	});
+	return txt;
+	//txt = txt.split(" OR ").join("<br><br><span='.cuteSpan'>OR</span><br><br>");
+	//txt = txt.split(" OR ").join("<br><br><span='.cuteSpan'>OR</span><br><br>");
+}
 	
