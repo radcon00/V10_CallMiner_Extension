@@ -103,7 +103,14 @@ function getCategoryNamesID(){
 		
 	};
 	
+	//pretty element addition. This is the html for the elements
 	
+	var prettyBtn = "<div class='prettyPrint'><button id='prettyBtn' class='Master_Button_Dark' type='button'>Pretty Print</button></div>";
+	var prettyTextContainer = "<div class='prettyContainer'><div class='prettyContent'></div></div>";
+	
+	//append the pretty elements to the DOM
+	$('.SB_SearchTimeArea').append(prettyBtn);
+	$('.SB_FilterListAreaWrapper').append(prettyTextContainer);
 	
 	$('#Master_Footer_StatusBar').append(usgeContainer);
 	$('#usgeContainer').css(props);
@@ -142,6 +149,14 @@ function getCategoryNamesID(){
 	$('#usgeCatView').css(divstyle);
 	$('#usgeCatSelector').css(divstyle);
 	$('#divusgeFilterAttr').css(divstyle);
+	
+	
+	
+	//pretty printing click event
+	$('#prettyBtn').on('click',function(e){
+		$('.prettyContainer').toggle();
+	});
+	
 	
 	//add change event that will trigger the clicking of the category
 	$('.category_selector').on("change",function (e) {
