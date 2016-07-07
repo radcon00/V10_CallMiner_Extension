@@ -65,13 +65,19 @@ span.select2-dropdown--above{
 	margin-bottom: 10px;
 }
 .prettyContainer{
-	height: auto;
+	height: 300px;
 	width: 673px;
 	background-color: rgba(128,128,128,0.3);
 	overflow-y: auto;
 	border:1px solid black;
+	display: none;
 }
 .prettyContent{
 	margin-left: 5px;
 	margin-bottom: 10px;
+	margin-right: 5px;
+	margin-top: 10px;
+}
+.cuteSpan{
+	color: purple;
 }

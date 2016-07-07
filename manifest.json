@@ -1,6 +1,6 @@
 {
-  "name": "CallMiner Categories Navigator",
-  "version": "1.4.3",
+  "name": "CallMiner v10 Categories Navigator",
+  "version": "0.1.0",
   "manifest_version": 2,
   "description": "CallMiner category navigation and management tool",
   "homepage_url": "http://extensionizr.com",
@@ -9,7 +9,7 @@
     "48": "icons/icon48.png",
     "128": "icons/icon128.png"
   },
-  "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAnK923rpp5h1RVlG4PfQZXMziQWeAEziIP4W2lm1dwMgVIHfrX+eURrNPQm3x/0fMshTbbkrWei0X2/6W8b0htkRxzg6c8ZvhtT6EVthpKQ2oDAzk/7mXP8Vv8C8aUvMpe/+6yqLStxqEU8os0ZmLelaTkybbiZcfrbI5rysJxiDx/KifsA9B90rP7r0inOBq1O/Kd3m1hFEPRzhoaByLFnwTZUGUEt6kHX7HHLWLTaffQn1k4CkkTnofbGN7gerxxgFAk5sgU91zWXD7NKVDUjKmjBnV8+idCSajp02F9JKhWUX9fI4urf1+NmC3nPw05pm6ISYMamjbW9GclIeajQIDAQAB",
+  
   "default_locale": "en",
   "background": {
     "page": "src/bg/background.html",
