@@ -1,0 +1,17 @@
+<li class="angular-ui-tree-node ng-scope" ng-repeat="container in pane.data.containers">
+        <div class="tree-node">
+            <div class="tree-node-content">
+                <a ng-click="pane.toggleContainer(container)" class="">
+                    <span class="fa tree-expand-control fa-lg fa-caret-right" ng-class="{'fa-caret-right fa-lg': container.collapsed, 'fa-caret-down fa-lg': !container.collapsed}"></span>
+
+                    <div class="tree-label">
+                        <span title="Chrome Extensions" class="ng-binding">Chrome Extensions</span>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <ol class="child-tree angular-ui-tree-nodes hidden" ng-class="{hidden: container.collapsed}">
+            <!-- ngRepeat: groupitem in container.GroupItems -->
+  <li>This is a test</li>
+        </ol>
+    </li>
