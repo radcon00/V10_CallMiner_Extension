@@ -6,11 +6,11 @@ var categoryList={};
 var caretPostion=null;
 
 var checkReady = function(){
-	if($("body.erk-unselectable").length>0||$("")){
+	if($("body.erk-unselectable").length>0){
 			console.log("i am hooked up");
 			$.get(chrome.extension.getURL('Templates/ExtensionUI'),function(data){
-				//todo add the logic to take the data returnd and append it to the pages html
-				var tes = data
+				//todo add the logic to take the data(it's html) returnd and append it to the page's html
+				
 			});
 			var intervalHandleNav;
 			intervalHandleNav = setInterval(function(){
