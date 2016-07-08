@@ -9,9 +9,11 @@ var template;
 var checkReady = function(){
 	if($("body.erk-unselectable").length>0){
 			console.log("i am hooked up");
+			//set up select2 reference 
+			$('head').append("<script src='//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.min.js'></script>");
 			
 			$.get(chrome.extension.getURL('Templates/ExtensionUI'),function(data){
-				//todo add the logic to take the data(it's html) returnd and append it to the page's html
+				//get the html template data for insertion
 				template = data;
 			});
 			//this will set upl the events on the navbar to keep adding back the extension when the page changes 
@@ -55,7 +57,8 @@ function uiManager() {
 
 				if($('span[language-text="AdvancedFilter"]').length>0){
 				var $sidebar = $("div#sidebar").find("ol.angular-ui-tree-nodes:not(.hidden)").filter('ol:not(.child-tree)');
-				$sidebar.append(template);	
+				$sidebar.append(template);				
+				self.setUpSelect2();	
 				self.setExtensionUIEvents();			
 				clearInterval(intervalHandleCats);
 
@@ -64,8 +67,11 @@ function uiManager() {
 
 	this.setExtensionUIEvents = function(){
 		var $el = $("span[title='Chrome Extensions']").parent();
+		var $elContainer = $("span[title='Chrome Extensions']").parents("a");
+		var self = this;
 		
-		$el.on('click',function(e){
+		//controls if the container for the extension is visible or not
+		$elContainer.on('click',function(e){
 			if($el.parents('a').find('span.fa-caret-right').length>0){
 				$el.parents('a').find('span.fa').removeClass("fa-caret-right").addClass("fa-caret-down");
 				$el.parents(".tree-node").next().removeClass("hidden");
@@ -75,6 +81,37 @@ function uiManager() {
 				$el.parents(".tree-node").next().addClass("hidden");
 			}
 			
+		});
+
+		//this will load the select2 with category names when it opens first
+		$('#extNavBox').on("select2:opening",function(e) {
+		if ($('#extNavBox').children('option').length<2) {
+			self.setCategoryinSelect2();
+		}
+		});
+
+	};
+	this.setUpSelect2 = function(){
+		$('#extNavBox').select2({
+		placeholder: "Category Quick Select",
+		allowClear:true
+		});
+	//format select2 a bit it needs to be longer;
+	$('.select2').css("width","100%");
+	};
+
+	this.getAllCategories = function(){
+		var cats = $('a').find("span[title='Categories']").parents("li").find("div .value-item");
+		return cats;
+	};
+
+	this.setCategoryinSelect2 = function(){
+		var $cats = this.getAllCategories();
+		var $sel2 = $('#extNavBox');
+		$cats.each(function(i,e){
+			var catName = $(e).html();
+			var option = "<option value='" + catName +"'>"+catName + "</option>"; 
+			$sel2.append(option);
 		});
 	};
 }

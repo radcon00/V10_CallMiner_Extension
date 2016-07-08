@@ -12,6 +12,8 @@
         </div>
         <ol class="child-tree angular-ui-tree-nodes hidden" ng-class="{hidden: container.collapsed}">
             <!-- ngRepeat: groupitem in container.GroupItems -->
-  <li>This is a test</li>
+  <li>
+      <select id="extNavBox"><option></option></select>
+  </li>
         </ol>
     </li>
