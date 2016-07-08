@@ -31,7 +31,8 @@
       "https://www.googleapis.com/auth/plus.login",
       "https://www.googleapis.com/auth/chromewebstore.readonly"
     ]
-  } ,  
+  } ,
+  "web_accessible_resources":["Templates/*"],  
   "content_scripts": [
     {
       "matches": [

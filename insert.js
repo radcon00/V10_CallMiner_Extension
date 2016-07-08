@@ -5,6 +5,35 @@ var catParent=[];
 var categoryList={};
 var caretPostion=null;
 
+var checkReady = function(){
+	if($("body.erk-unselectable").length>0||$("")){
+			console.log("i am hooked up");
+			$.get(chrome.extension.getURL('Templates/ExtensionUI'),function(data){
+				//todo add the logic to take the data returnd and append it to the pages html
+				var tes = data
+			});
+			var intervalHandleNav;
+			intervalHandleNav = setInterval(function(){
+				if($('span[language-text="Search"]').length>0){
+				console.log("i will be able to see the element");
+				clearInterval(intervalHandleNav);
+			}
+			},500);
+			
+			var intervalHandleCats;
+			intervalHandleCats = setInterval(function(){
+
+				if($('span[language-text="AdvancedFilter"]').length>0){
+				console.log("i will be able to see the Advanced filter element ");
+				
+				clearInterval(intervalHandleCats);
+
+			}},500);
+		}
+	
+
+};
+$(checkReady);
 setTimeout(getCategoryNamesID, 4000);
 
 
