@@ -4,36 +4,62 @@ var catNames = [];
 var catParent=[];
 var categoryList={};
 var caretPostion=null;
+var template;
 
 var checkReady = function(){
 	if($("body.erk-unselectable").length>0){
 			console.log("i am hooked up");
+			
 			$.get(chrome.extension.getURL('Templates/ExtensionUI'),function(data){
 				//todo add the logic to take the data(it's html) returnd and append it to the page's html
-				
+				template = data;
 			});
-			var intervalHandleNav;
-			intervalHandleNav = setInterval(function(){
-				if($('span[language-text="Search"]').length>0){
-				console.log("i will be able to see the element");
-				clearInterval(intervalHandleNav);
-			}
-			},500);
+			//this will set upl the events on the navbar to keep adding back the extension when the page changes 
+			var uiMan = new uiManager();
+			uiMan.setNavBarEvents();
+			//add extension on initiall app load
+			uiMan.addExtension();						
 			
-			var intervalHandleCats;
-			intervalHandleCats = setInterval(function(){
-
-				if($('span[language-text="AdvancedFilter"]').length>0){
-				console.log("i will be able to see the Advanced filter element ");
-				
-				clearInterval(intervalHandleCats);
-
-			}},500);
 		}
 	
 
 };
 $(checkReady);
+
+function uiManager() {
+	this.setNavBarEvents = function(){
+		var self = this;
+		var intervalHandleNav;
+			intervalHandleNav = setInterval(function(){
+				if($('span[language-text="Search"]').length>0){
+				//set the click events for the search tab and the Category creation tab
+				$('span[language-text="Search"]').on('click',function(e){
+					
+					self.addExtension();
+				});
+
+				$('span[language-text="AdvancedSearch"]').on('click',function(e){
+					
+					self.addExtension();
+				});
+				clearInterval(intervalHandleNav);
+			}
+			},500);
+	};
+
+	this.addExtension = function () {
+
+		var intervalHandleCats;
+			intervalHandleCats = setInterval(function(){
+
+				if($('span[language-text="AdvancedFilter"]').length>0){
+				var $sidebar = $("div#sidebar").find("ol.angular-ui-tree-nodes:not(.hidden)").filter('ol:not(.child-tree)');
+				$sidebar.append(template);				
+				clearInterval(intervalHandleCats);
+
+			}},500);
+	};
+}
 setTimeout(getCategoryNamesID, 4000);
 
 
