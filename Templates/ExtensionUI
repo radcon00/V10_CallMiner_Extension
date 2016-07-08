@@ -15,5 +15,13 @@
   <li>
       <select id="extNavBox"><option></option></select>
   </li>
+  <li>
+      <div id="extNavDetails">
+        <div id="ci_plusMinusContainer" class="hidden">
+            <div id="ci_plusContainer"><span class="fa fa-2x fa-plus-circle" style=""></span></div>
+            <div id="ci_minusContainer"><span class="fa fa-2x fa-minus-circle" style=""></span></div>
+        </div>
+      </div>
+  </li>
         </ol>
     </li>

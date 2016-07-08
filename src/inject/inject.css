@@ -81,3 +81,12 @@ span.select2-dropdown--above{
 .cuteSpan{
 	color: purple;
 }
+#extNavDetails{
+	width: 100%;
+	height: 330px;
+}
+#ci_plusMinusContainer{
+	float: right;
+    margin-right: 7px;
+    margin-top: 5px;
+}

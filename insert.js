@@ -50,14 +50,18 @@ function uiManager() {
 	};
 
 	this.addExtension = function () {
-
+		//only add if it is not present. if it is return.
+		//if( $("span[title='Chrome Extensions']").length>0){
+		//	return
+		//}
 		var intervalHandleCats;
 		var self = this;
 			intervalHandleCats = setInterval(function(){
 
 				if($('span[language-text="AdvancedFilter"]').length>0){
 				var $sidebar = $("div#sidebar").find("ol.angular-ui-tree-nodes:not(.hidden)").filter('ol:not(.child-tree)');
-				$sidebar.append(template);				
+				$sidebar.append(template);
+				self.addEventsforplus_minus();				
 				self.setUpSelect2();	
 				self.setExtensionUIEvents();			
 				clearInterval(intervalHandleCats);
@@ -96,8 +100,26 @@ function uiManager() {
 		placeholder: "Category Quick Select",
 		allowClear:true
 		});
+	var self = this;	
+	//set the events for the select2 box
+	//add change event that will trigger the clicking of the category
+	$('#extNavBox').on("change",function (e) {
+		var textSelected = $('#extNavBox option:selected').text();
+		
+		if (textSelected !== "") {
+			var $cats = self.getAllCategories();
+			$cats.filter('div[title="' + textSelected +'"]').click()
+			$('#ci_plusMinusContainer').removeClass('hidden');
+		//running the alternate function to avoid the error the occurs when a category is updated.	
+			//$('#usge_Count').text(getCallCount(valSelected));				
+			//toggleInfoBox();
+			
+		}
+		
+	});
+
 	//format select2 a bit it needs to be longer;
-	$('.select2').css("width","100%");
+	$('.select2').css("width","98%");
 	};
 
 	this.getAllCategories = function(){
@@ -112,6 +134,16 @@ function uiManager() {
 			var catName = $(e).html();
 			var option = "<option value='" + catName +"'>"+catName + "</option>"; 
 			$sel2.append(option);
+		});
+	};
+
+	this.addEventsforplus_minus = function(){
+		$('#ci_plusContainer').on('click',function(e){
+			$('.ballon-container:not(.ng-hide)').find('.fa-plus-circle').click()
+		});
+
+		$('#ci_minusContainer').on('click',function(e){
+			$('.ballon-container:not(.ng-hide)').find('.fa-minus-circle').click()
 		});
 	};
 }
