@@ -50,14 +50,32 @@ function uiManager() {
 	this.addExtension = function () {
 
 		var intervalHandleCats;
+		var self = this;
 			intervalHandleCats = setInterval(function(){
 
 				if($('span[language-text="AdvancedFilter"]').length>0){
 				var $sidebar = $("div#sidebar").find("ol.angular-ui-tree-nodes:not(.hidden)").filter('ol:not(.child-tree)');
-				$sidebar.append(template);				
+				$sidebar.append(template);	
+				self.setExtensionUIEvents();			
 				clearInterval(intervalHandleCats);
 
 			}},500);
+	};
+
+	this.setExtensionUIEvents = function(){
+		var $el = $("span[title='Chrome Extensions']").parent();
+		
+		$el.on('click',function(e){
+			if($el.parents('a').find('span.fa-caret-right').length>0){
+				$el.parents('a').find('span.fa').removeClass("fa-caret-right").addClass("fa-caret-down");
+				$el.parents(".tree-node").next().removeClass("hidden");
+			}
+			else{
+				$el.parents('a').find('span.fa').removeClass("fa-caret-down").addClass("fa-caret-right");
+				$el.parents(".tree-node").next().addClass("hidden");
+			}
+			
+		});
 	};
 }
 setTimeout(getCategoryNamesID, 4000);
