@@ -42,7 +42,7 @@
         "src/inject/inject.css",
         "src/inject/select2.css"
       ],
-      "js": ["js/jquery/jquery.min.js",
+      "js": ["js/jquery/jquery.min.js","js/node_modules/arrive/src/arrive.js",
         "insert.js"
       ],
       "all_frames": true,
