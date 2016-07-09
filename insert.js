@@ -246,14 +246,8 @@ function uiManager() {
 			console.log('getting ready to set up')
 			clearInterval(setintHandle);
 			//monitor this element for additions to it's dom. We are looking for the addition of a textarea element.
-			$('button[ng-click="addComponent();"]').on('click',function(e){
-				
-				
-				var tempHandle = setInterval(function(){
-					if($(".search-box").length===0){return;}
-
-					clearInterval(tempHandle);
-					$('.search-box').keyup(function name() {
+			$('#advancedSearchContainer').arrive("textarea.search-box",function(e){
+				$('.search-box').keyup(function name() {
 							
 							var searchText = $(this).val();
 							var operators = ["NOT BEFORE","NOT AFTER","NOT NEAR","BEFORE","AFTER","NEAR","OR"];
@@ -278,7 +272,6 @@ function uiManager() {
 							
 							caretPostion = $(this).prop('selectionStart');
 						});
-				},500);
 			});
 
 			
