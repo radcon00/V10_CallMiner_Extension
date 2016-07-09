@@ -83,10 +83,23 @@ span.select2-dropdown--above{
 }
 #extNavDetails{
 	width: 100%;
-	height: 330px;
+	height: 50px;
 }
 #ci_plusMinusContainer{
 	float: right;
     margin-right: 7px;
     margin-top: 5px;
+}
+#ci_catCountContainer{
+	float: left;
+	margin-left: 20px;
+	margin-top: 25px;
+}
+#ci_catCount{
+	font-size: x-large;
+}
+#ci_divider{
+	margin-left: 7px;
+	margin-right: 7px;
+	border-top: 1px solid #999;
 }

@@ -109,6 +109,7 @@ function uiManager() {
 		if (textSelected !== "") {
 			var $cats = self.getAllCategories();
 			$cats.filter('div[title="' + textSelected +'"]').click()
+			self.setCallCount(textSelected);
 			$('#ci_plusMinusContainer').removeClass('hidden');
 		//running the alternate function to avoid the error the occurs when a category is updated.	
 			//$('#usge_Count').text(getCallCount(valSelected));				
@@ -138,6 +139,8 @@ function uiManager() {
 	};
 
 	this.addEventsforplus_minus = function(){
+       //this adds or removes the category from the search filters
+
 		$('#ci_plusContainer').on('click',function(e){
 			$('.ballon-container:not(.ng-hide)').find('.fa-plus-circle').click()
 		});
@@ -145,6 +148,15 @@ function uiManager() {
 		$('#ci_minusContainer').on('click',function(e){
 			$('.ballon-container:not(.ng-hide)').find('.fa-minus-circle').click()
 		});
+	};
+
+	//set the call count for the selected category
+	this.setCallCount = function(catText){
+		var $catEl = this.getAllCategories();
+
+		//this find the cat the looks at its parent container then looks for the span for call count			
+		var count = $catEl.filter('div[title="' + catText +'"]').parent().find('span[ng-show="::item.ItemCount >= 0"]').html(); 
+		$('#ci_catCount').html("Call Count: "+ count);
 	};
 }
 setTimeout(getCategoryNamesID, 4000);
