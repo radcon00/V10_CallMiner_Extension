@@ -19,6 +19,9 @@ var checkReady = function(){
 			//this will set upl the events on the navbar to keep adding back the extension when the page changes 
 			var uiMan = new uiManager();
 			uiMan.setNavBarEvents();
+
+			
+
 			//add extension on initiall app load
 			uiMan.addExtension();						
 			
@@ -38,6 +41,7 @@ function uiManager() {
 				$('span[language-text="Search"]').on('click',function(e){
 					
 					self.addExtension();
+					self.setSearchBoxEvents();
 				});
 
 				$('span[language-text="AdvancedSearch"]').on('click',function(e){
@@ -45,6 +49,11 @@ function uiManager() {
 					self.addExtension();
 				});
 				clearInterval(intervalHandleNav);
+				//load syntax short cuts if the searchbar is present and we are on the Search page
+			if($('.menu-selected').filter('span[language-text="Search"]').length>0){
+				self.setSearchBoxEvents();
+			}
+
 			}
 			},500);
 	};
@@ -111,9 +120,7 @@ function uiManager() {
 			$cats.filter('div[title="' + textSelected +'"]').click()
 			self.setCallCount(textSelected);
 			$('#extNavDetails').removeClass("hidden");
-		//running the alternate function to avoid the error the occurs when a category is updated.	
-			//$('#usge_Count').text(getCallCount(valSelected));				
-			//toggleInfoBox();
+		
 			
 		}
 		
@@ -183,6 +190,44 @@ function uiManager() {
 			//toggleInfoBox();
 			
 		}	
+	};
+
+	this.setSearchBoxEvents = function(){
+
+		var setintHandle = setInterval(function(){
+
+			if($('#searchBox').length===0){return;}
+			console.log("got into searchbox")
+			clearInterval(setintHandle);
+			//event handler for the search box key up event. We are going to add shortcut syntax to the text box
+			$('#searchBox').keyup(function name() {
+				
+				var searchText = $(this).val();
+				var operators = ["NOT BEFORE","NOT AFTER","NOT NEAR","BEFORE","AFTER","NEAR","OR"];
+				var shortcuts = ["!>","!<","!=",">","<","=","^"];
+				var tempPosition = $(this).prop('selectionStart');
+				for (var i = 0; i < shortcuts.length; i++) {
+					var shortcut = shortcuts[i];
+					//var re = new RegExp(shortcut,'g');
+					if (searchText.indexOf(shortcut) > -1) {
+						searchText = searchText.replace(shortcut,operators[i])
+						$(this).val(searchText);
+						tempPosition +=  (operators[i].length - shortcut.length)
+						$(this).setCursorPosition(tempPosition);
+						break;
+					}
+					
+				}
+			});
+			
+			//event handler for the search box focus out event. It will set the caretposition variable used in the function that adds the category syntax to the search box.
+			$('#searchBox').focusout(function name() {
+				
+				caretPostion = $(this).prop('selectionStart');
+			});
+			
+		},500);
+		
 	};
 }
 setTimeout(getCategoryNamesID, 4000);
