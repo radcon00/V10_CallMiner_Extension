@@ -16,14 +16,29 @@ var checkReady = function(){
 				//get the html template data for insertion
 				template = data;
 			});
-			//this will set upl the events on the navbar to keep adding back the extension when the page changes 
-			var uiMan = new uiManager();
-			uiMan.setNavBarEvents();
 
 			
+			//this will set upl the events on the navbar to keep adding back the extension when the page changes 
+			var uiMan = new uiManager();
+			uiMan.setNavBarEvents();			
 
 			//add extension on initiall app load
-			uiMan.addExtension();						
+			uiMan.addExtension();	
+
+			//We need to track when the url changes to manage the ajax requests effect on the dom.
+			$(window).on('hashchange', function(e){
+
+				if(window.location.hash.split("/")[1]==="AdvancedSearch" && window.location.hash.split("/").length ===2){
+					uiMan.addExtension();
+					uiMan.setCatBuilderSearchBoxEvents();	
+				}
+
+				if(window.location.hash.split("/")[1]==="Search" && window.location.hash.split("/").length==3){
+					uiMan.addExtension();
+					uiMan.setSearchBoxEvents();
+				}
+				
+			});					
 			
 		}
 	
