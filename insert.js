@@ -110,12 +110,20 @@ function uiManager() {
 			var $cats = self.getAllCategories();
 			$cats.filter('div[title="' + textSelected +'"]').click()
 			self.setCallCount(textSelected);
-			$('#ci_plusMinusContainer').removeClass('hidden');
+			$('#extNavDetails').removeClass("hidden");
 		//running the alternate function to avoid the error the occurs when a category is updated.	
 			//$('#usge_Count').text(getCallCount(valSelected));				
 			//toggleInfoBox();
 			
 		}
+		
+	});
+
+	//add the unselect event to hide the call count and include and exclude section of the select2 box is cleared
+	$('#extNavBox').on("select2:unselect",function (e) {
+			
+			$('#extNavDetails').addClass('hidden');
+		
 		
 	});
 
@@ -140,12 +148,14 @@ function uiManager() {
 
 	this.addEventsforplus_minus = function(){
        //this adds or removes the category from the search filters
-
-		$('#ci_plusContainer').on('click',function(e){
+	   	var self = this;
+		$('#ci_plusContainer').on('click',function(e){	
+			self.selectedCatClick();
 			$('.ballon-container:not(.ng-hide)').find('.fa-plus-circle').click()
 		});
 
 		$('#ci_minusContainer').on('click',function(e){
+			self.selectedCatClick();
 			$('.ballon-container:not(.ng-hide)').find('.fa-minus-circle').click()
 		});
 	};
@@ -157,6 +167,22 @@ function uiManager() {
 		//this find the cat the looks at its parent container then looks for the span for call count			
 		var count = $catEl.filter('div[title="' + catText +'"]').parent().find('span[ng-show="::item.ItemCount >= 0"]').html(); 
 		$('#ci_catCount').html("Call Count: "+ count);
+	};
+	
+	//helper function that click the selected category only if the ballon element is hidden
+	this.selectedCatClick = function(){
+
+		var textSelected = $('#extNavBox option:selected').text();
+		
+		if (textSelected !== "" && $('.ballon-container:not(.ng-hide)').length===0) {
+			var $cats = this.getAllCategories();
+			$cats.filter('div[title="' + textSelected +'"]').click()
+			
+		//running the alternate function to avoid the error the occurs when a category is updated.	
+			//$('#usge_Count').text(getCallCount(valSelected));				
+			//toggleInfoBox();
+			
+		}	
 	};
 }
 setTimeout(getCategoryNamesID, 4000);
