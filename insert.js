@@ -39,13 +39,16 @@ function uiManager() {
 				if($('span[language-text="Search"]').length>0){
 				//set the click events for the search tab and the Category creation tab
 				$('span[language-text="Search"]').on('click',function(e){
-					
+					if(window.location.hash.split("/")[1]==="Search" && $('.menu-selected').filter('span[language-text="Search"]').length>0){
+						//this makes sure that the click handler only reponds to a user navigating away from the tab.
+						return;
+					}
 					self.addExtension();
 					self.setSearchBoxEvents();
 				});
 
 				$('span[language-text="AdvancedSearch"]').on('click',function(e){
-					
+					if(window.location.hash.split("/")[1]==="AdvancedSearch" && $('.menu-selected').filter('span[language-text="AdvancedSearch"]').length>0){return;}
 					self.addExtension();
 					self.setCatBuilderSearchBoxEvents();
 				});
