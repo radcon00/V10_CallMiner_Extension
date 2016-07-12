@@ -12,7 +12,7 @@ var checkReady = function(){
 			//set up select2 reference 
 			$('head').append("<script src='//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.min.js'></script>");
 			
-			$.get(chrome.extension.getURL('Templates/ExtensionUI'),function(data){
+			$.get(chrome.extension.getURL('Templates/ExtensionUI2.html'),function(data){
 				//get the html template data for insertion
 				template = data;
 			});
@@ -29,12 +29,12 @@ var checkReady = function(){
 			$(window).on('hashchange', function(e){
 
 				if(window.location.hash.split("/")[1]==="AdvancedSearch" && window.location.hash.split("/").length ===2){
-					uiMan.addExtension();
+				//	uiMan.addExtension();
 					uiMan.setCatBuilderSearchBoxEvents();	
 				}
 
 				if(window.location.hash.split("/")[1]==="Search" && window.location.hash.split("/").length==3){
-					uiMan.addExtension();
+				//	uiMan.addExtension();
 					uiMan.setSearchBoxEvents();
 				}
 				
@@ -58,13 +58,17 @@ function uiManager() {
 						//this makes sure that the click handler only reponds to a user navigating away from the tab.
 						return;
 					}
-					self.addExtension();
+					
+					//self.addExtension();
 					self.setSearchBoxEvents();
 				});
 
 				$('span[language-text="AdvancedSearch"]').on('click',function(e){
 					if(window.location.hash.split("/")[1]==="AdvancedSearch" && $('.menu-selected').filter('span[language-text="AdvancedSearch"]').length>0){return;}
-					self.addExtension();
+					
+					
+					
+					//self.addExtension();
 					self.setCatBuilderSearchBoxEvents();
 				});
 				clearInterval(intervalHandleNav);
@@ -92,9 +96,10 @@ function uiManager() {
 		var self = this;
 			intervalHandleCats = setInterval(function(){
 
-				if($('span[language-text="AdvancedFilter"]').length>0){
-				var $sidebar = $("div#sidebar").find("ol.angular-ui-tree-nodes:not(.hidden)").filter('ol:not(.child-tree)');
-				$sidebar.append(template);
+				if($('ul.main-menu.nav').length>0){
+				var $navMenu = $('ul.main-menu.nav');
+				console.log("adding the extension");
+				$navMenu.append(template);
 				self.addEventsforplus_minus();				
 				self.setUpSelect2();	
 				self.setExtensionUIEvents();			
@@ -131,7 +136,7 @@ function uiManager() {
 	};
 	this.setUpSelect2 = function(){
 		$('#extNavBox').select2({
-		placeholder: "Category Quick Select",
+		placeholder: "CATEGORY QUICK SELECT",
 		allowClear:true
 		});
 	var self = this;	
@@ -145,7 +150,7 @@ function uiManager() {
 			$cats.filter('div[title="' + textSelected +'"]').click()
 			self.setCallCount(textSelected);
 			$('#extNavDetails').removeClass("hidden");
-		
+			$('#ci_plusMinusContainer').removeClass('hidden');
 			
 		}
 		
@@ -155,12 +160,15 @@ function uiManager() {
 	$('#extNavBox').on("select2:unselect",function (e) {
 			
 			$('#extNavDetails').addClass('hidden');
-		
+			$('#ci_plusMinusContainer').addClass('hidden');
+			
 		
 	});
 
 	//format select2 a bit it needs to be longer;
-	$('.select2').css("width","98%");
+	$('.select2').css("width","100%");
+	$('.select2-selection').css("background","rgba(0, 0, 0,0.1)");	
+	$('.select2-selection').css('border','none');
 	};
 
 	this.getAllCategories = function(){
@@ -295,6 +303,12 @@ function uiManager() {
 			
 			
 		},500);
+	};
+
+	this.modalOpen= function(){
+		var isopen = $('.modal-dialog').length >0;
+		
+		return isopen;		
 	};
 }
 setTimeout(getCategoryNamesID, 4000);
