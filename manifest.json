@@ -32,7 +32,7 @@
       "https://www.googleapis.com/auth/chromewebstore.readonly"
     ]
   } ,
-  "web_accessible_resources":["Templates/*"],  
+  "web_accessible_resources":["Templates/*","images/*"],  
   "content_scripts": [
     {
       "matches": [

@@ -89,12 +89,14 @@ span.select2-dropdown--above{
 #ci_plusMinusContainer{
 	float: right;
 	margin-top: 10px;
+	display: inherit;
     
 }
 #ci_catCountContainer{
 	
 	float: right;	
 	margin-top: 0px;
+	display: inherit;
 }
 #ci_catCount{
 	font-size: medium;
@@ -127,4 +129,14 @@ span.select2-dropdown--above{
 	font-size: 14px;
 	font-family:  'OpenSans-Regular',Helvetica,Lucida Sans,Segoe UI,Calibri,sans serif !important;
 	margin-bottom: 5px;
+}
+
+#ci_cataddIconContainer{
+	display: inline;
+}
+
+.BBIcon{
+	width:40px;
+	height: 38px;
+	margin-bottom: 7px;
 }

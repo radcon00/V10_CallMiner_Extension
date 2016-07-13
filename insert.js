@@ -5,6 +5,7 @@ var catParent=[];
 var categoryList={};
 var caretPostion=null;
 var template;
+var imageLocation;
 
 var checkReady = function(){
 	if($("body.erk-unselectable").length>0){
@@ -16,7 +17,8 @@ var checkReady = function(){
 				//get the html template data for insertion
 				template = data;
 			});
-
+			//get the url of the image we want to use as an icon
+			imageLocation = chrome.extension.getURL('images/buildingblocks.png');
 			
 			//this will set upl the events on the navbar to keep adding back the extension when the page changes 
 			var uiMan = new uiManager();
@@ -100,7 +102,8 @@ function uiManager() {
 				var $navMenu = $('ul.main-menu.nav');
 				console.log("adding the extension");
 				$navMenu.append(template);
-				self.addEventsforplus_minus();				
+				self.addEventsforplus_minus();
+				self.setCssCatBB();				
 				self.setUpSelect2();	
 				self.setExtensionUIEvents();			
 				clearInterval(intervalHandleCats);
@@ -305,10 +308,8 @@ function uiManager() {
 		},500);
 	};
 
-	this.modalOpen= function(){
-		var isopen = $('.modal-dialog').length >0;
-		
-		return isopen;		
+	this.setCssCatBB= function(){
+		$('.BBIcon').attr('src',imageLocation);
 	};
 }
 setTimeout(getCategoryNamesID, 4000);
