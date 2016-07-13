@@ -103,7 +103,8 @@ function uiManager() {
 				console.log("adding the extension");
 				$navMenu.append(template);
 				self.addEventsforplus_minus();
-				self.setCssCatBB();				
+				self.setCssCatBB();		
+				self.setClickEventCatBB();		
 				self.setUpSelect2();	
 				self.setExtensionUIEvents();			
 				clearInterval(intervalHandleCats);
@@ -184,7 +185,8 @@ function uiManager() {
 		var $sel2 = $('#extNavBox');
 		$cats.each(function(i,e){
 			var catName = $(e).html();
-			var option = "<option value='" + catName +"'>"+catName + "</option>"; 
+			var folderGroup = $(e).parents('div.row:not(#sidebar)').prev().find('span[title]').html();
+			var option = "<option value='" + folderGroup +"'>"+catName + "</option>"; 
 			$sel2.append(option);
 		});
 	};
@@ -310,6 +312,32 @@ function uiManager() {
 
 	this.setCssCatBB= function(){
 		$('.BBIcon').attr('src',imageLocation);
+	};
+
+	this.setClickEventCatBB = function (){
+		$('.BBIcon').on('click',function(e){
+
+			var textSelected = $('#extNavBox option:selected').text();
+			var folderGroup = $('#extNavBox option:selected').val();
+		
+			if (textSelected !== ""){
+				
+				//create the category search syntax then append it to the search box.
+				var catSyntax = "CAT:["+ folderGroup +"."+textSelected +"]";
+				var currentVal = $('#searchBox').val();
+					
+			
+				$('#searchBox').focus();
+				if (caretPostion) {
+					var newTxt = currentVal.slice(0,caretPostion) + catSyntax + currentVal.slice(caretPostion,currentVal.length); //set the position of the catSyntax within existing text
+					$('#searchBox').val(newTxt); 
+					$('#searchBox').setCursorPosition(caretPostion + catSyntax.length);//adjust the curser position by adjusting by the amount of the inserted text
+					return;
+				}			
+				$('#searchBox').val(currentVal.length>0 ? currentVal + " " + catSyntax : catSyntax ); //check if the text box is blank so you can position the new text correctly.
+			}
+
+		});
 	};
 }
 setTimeout(getCategoryNamesID, 4000);
