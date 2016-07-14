@@ -6,6 +6,7 @@ var categoryList={};
 var caretPostion=null;
 var template;
 var imageLocation;
+var selmanager = new sel2Manager();
 
 var checkReady = function(){
 	if($("body.erk-unselectable").length>0){
@@ -119,6 +120,7 @@ function uiManager() {
 				attributes.initOnClick("ATTRIBUTES QUICK SELECT");
 				measures.initOnClick("MEASURES QUICK SELECT");
 				measures.cssSelect2();
+				var navsetup = new navManager();
 				clearInterval(intervalHandleCats);
 
 			}},500);
@@ -155,6 +157,8 @@ function uiManager() {
 		placeholder: "CATEGORY QUICK SELECT",
 		allowClear:true
 		});
+	var instance = $('span:contains('+"CATEGORY QUICK SELECT"+')').first();
+	selmanager.add(instance);	
 	var self = this;	
 	//set the events for the select2 box
 	//add change event that will trigger the clicking of the category
@@ -396,7 +400,7 @@ function folderGroup(group,identifier){
 
 		this.$sel2Instance = $('span:contains('+placeholdertxt+')').first();
 		this.$sel2Instance.addClass('hidden');
-
+		selmanager.add(this.$sel2Instance);
 		//this will load the select2 with memberinfo when it opens first
 		$('#'+ self.selectElement).on("select2:opening",function(e) {
 		if ($('#'+ self.selectElement).children('option').length<2) {
@@ -406,8 +410,63 @@ function folderGroup(group,identifier){
 	};
 }
 
+//this class manages the selectboxes so we know which one is currently visible
+function sel2Manager()
+{
+	this.sel2boxes = [];
+	this.currentNumber = 0;
+	this.add = function (item){
+		this.sel2boxes.push(item);
+	};
 
+	this.getNext = function(){
+		if(this.currentNumber+1 > this.sel2boxes.length-1){
+			this.currentNumber = 0;
+		}
+		else{
+			this.currentNumber = this.currentNumber+1 ;
+		}
+	};
 
+	this.getPrev = function(){
+		
+		if(this.currentNumber-1 <0){
+			this.currentNumber = this.sel2boxes.length-1;
+		}
+		else{
+			this.currentNumber = this.currentNumber-1 ;
+		}
+	};
+
+	this.getNextSelBox = function (){
+		return this.sel2boxes[this.currentNumber];
+	};
+	this.getCurrentSelBox = function(){
+		return this.sel2boxes[this.currentNumber];
+	};
+};
+
+function navManager()
+{
+	this.left = $('#ci_back');
+	this.rigth = $('#ci_forward');
+
+	this.rigth.on('click',function(){
+		selmanager.getCurrentSelBox().animate({width:'0%'});
+		selmanager.getCurrentSelBox().addClass('hidden');
+		selmanager.getNext();
+		selmanager.getNextSelBox().removeClass('hidden');
+		selmanager.getNextSelBox().animate({width:'100%'});
+	});
+
+	this.left.on('click',function(){
+		selmanager.getCurrentSelBox().animate({width:'0%'});
+		selmanager.getCurrentSelBox().addClass('hidden');
+		selmanager.getPrev();
+		selmanager.getNextSelBox().removeClass('hidden');
+		selmanager.getNextSelBox().animate({width:'100%'});
+	});
+};
 setTimeout(getCategoryNamesID, 4000);
 
 
