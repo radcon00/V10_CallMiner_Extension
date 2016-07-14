@@ -106,7 +106,19 @@ function uiManager() {
 				self.setCssCatBB();		
 				self.setClickEventCatBB();		
 				self.setUpSelect2();	
-				self.setExtensionUIEvents();			
+				self.setExtensionUIEvents();
+
+				//set up the additional select boxes for the other folder groups
+				var dimensions = new folderGroup("Dimensions","extNavDimensions");
+				var acoustics = new folderGroup("Acoustics","extNavAcoustics");
+				var attributes = new folderGroup("Attributes", "extNavAttributes");
+				var measures = new folderGroup("Measures", "extNavMeasures");
+
+				dimensions.initOnClick("DIMENSIONS QUICK SELECT");
+				acoustics.initOnClick("ACOUSTICS QUICK SELELCT");
+				attributes.initOnClick("ATTRIBUTES QUICK SELECT");
+				measures.initOnClick("MEASURES QUICK SELECT");
+				measures.cssSelect2();
 				clearInterval(intervalHandleCats);
 
 			}},500);
@@ -339,7 +351,63 @@ function uiManager() {
 
 		});
 	};
+
+	
 }
+
+//create a class to represent the different select2 objects we wil use to represent the folder groups
+function folderGroup(group,identifier){
+	this.f_group = group;
+	this.selectElement = identifier;
+	this.$sel2Instance;
+	this.setFolderMembers = function(){
+
+		var $members = this.getFolderGroupMembers(this.f_group);
+		var $sel2 = $('#'+ this.selectElement);
+		$members.each(function(i,e){
+			var catName = $(e).html();
+			var folderGroup = $(e).parents('div.row:not(#sidebar)').prev().find('span[title]').html();
+			var option = "<option value='" + folderGroup +"'>"+catName + "</option>"; 
+			$sel2.append(option);
+		});
+	};
+
+	this.getFolderGroupMembers= function(folder){
+
+		var members = $('a').find("span[title='"+ folder +"']").parents("li").find("div .value-item");
+		return members;
+	};
+
+	this.cssSelect2 = function(){
+
+		//format select2 a bit it needs to be longer;
+		$('.select2').css("width","100%");
+		$('.select2-selection').css("background","rgba(0, 0, 0,0.1)");	
+		$('.select2-selection').css('border','none');
+	};
+
+	this.initOnClick = function(placeholdertxt){
+		var self = this;
+
+		$('#'+ self.selectElement).select2({
+		placeholder: placeholdertxt,
+		allowClear:true
+		});
+
+		this.$sel2Instance = $('span:contains('+placeholdertxt+')').first();
+		this.$sel2Instance.addClass('hidden');
+
+		//this will load the select2 with memberinfo when it opens first
+		$('#'+ self.selectElement).on("select2:opening",function(e) {
+		if ($('#'+ self.selectElement).children('option').length<2) {
+			self.setFolderMembers();
+		}
+		});
+	};
+}
+
+
+
 setTimeout(getCategoryNamesID, 4000);
 
 
