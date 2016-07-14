@@ -21,7 +21,7 @@
     "storage",
     "identity",
     "https://www.googleapis.com/",
-    "http://callminer.usgande.local/eureka/*",
+    
     "https://*/*",
     "http://*/*"
   ],
