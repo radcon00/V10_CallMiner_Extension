@@ -199,11 +199,27 @@ function uiManager() {
 	this.setCategoryinSelect2 = function(){
 		var $cats = this.getAllCategories();
 		var $sel2 = $('#extNavBox');
+		
+
+
 		$cats.each(function(i,e){
 			var catName = $(e).html();
 			var folderGroup = $(e).parents('div.row:not(#sidebar)').prev().find('span[title]').html();
+			var groupParent = "Categories";
+
+			var optionGroup = "<optgroup label='"+folderGroup+"' id='"+groupParent+"-"+folderGroup+"'></optgroup>";
 			var option = "<option value='" + folderGroup +"'>"+catName + "</option>"; 
-			$sel2.append(option);
+			if($sel2.find('optgroup[id="'+groupParent+"-"+folderGroup+'"]').length===0){
+
+				//if the option group already exists add the option to it.
+				$sel2.append(optionGroup);
+				$('optgroup[id="'+groupParent+"-"+folderGroup+'"]').append(option);
+			}
+			else{
+
+				$('optgroup[id="'+groupParent+"-"+folderGroup+'"]').append(option);
+			}
+
 		});
 	};
 
@@ -241,12 +257,12 @@ function uiManager() {
 	
 	//helper function that click the selected category only if the ballon element is hidden
 	this.selectedCatClick = function(){
-//change the below code to this. uncommented the line to make it a generic search for the select item.
+
 		var textSelected = $('.select2:not(.hidden)').find('.select2-selection__rendered').attr('title');	
-//		var textSelected = $('#extNavBox option:selected').text();
+
 		
 		if (textSelected !== "" && $('.ballon-container:not(.ng-hide)').length===0) {
-//			var $cats = this.getAllCategories();
+
 			var folder = $('.select2:not(.hidden)').find('.select2-selection__rendered').attr('id').split('ext')[1].split('-')[0];//this will spit out the folder name from the id of the element
 			if(folder==="NavBox"){folder="Categories";}
 			folder = folder.split('Nav')[1];
@@ -382,11 +398,23 @@ function folderGroup(group,identifier){
 
 		var $members = this.getFolderGroupMembers(this.f_group);
 		var $sel2 = $('#'+ this.selectElement);
+		var self = this;
 		$members.each(function(i,e){
 			var catName = $(e).html();
 			var folderGroup = $(e).parents('div.row:not(#sidebar)').prev().find('span[title]').html();
+			var optionGroup = "<optgroup label='"+folderGroup+"' id='"+self.f_group+"-"+folderGroup+"'></optgroup>";
 			var option = "<option value='" + folderGroup +"'>"+catName + "</option>"; 
-			$sel2.append(option);
+			if($sel2.find('optgroup[id="'+self.f_group+"-"+folderGroup+'"]').length===0){
+
+				//if the option group already exists add the option to it.
+				$sel2.append(optionGroup);
+				$('optgroup[id="'+self.f_group+"-"+folderGroup+'"]').append(option);
+			}
+			else{
+
+				$('optgroup[id="'+self.f_group+"-"+folderGroup+'"]').append(option);
+			}
+			
 		});
 		this.setEventsSel2();
 	};
