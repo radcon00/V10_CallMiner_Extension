@@ -514,19 +514,25 @@ function navManager()
 	this.rigth = $('#ci_forward');
 
 	this.rigth.on('click',function(){
-		selmanager.getCurrentSelBox().animate({width:'0%'});
-		selmanager.getCurrentSelBox().addClass('hidden');
-		selmanager.getNext();
-		selmanager.getNextSelBox().removeClass('hidden');
-		selmanager.getNextSelBox().animate({width:'100%'});
+		selmanager.getCurrentSelBox().animate({width:'0%'},function(){
+
+			selmanager.getCurrentSelBox().addClass('hidden');
+			selmanager.getNext();
+			selmanager.getNextSelBox().removeClass('hidden');
+			selmanager.getNextSelBox().animate({width:'100%'});
+		});
+		
 	});
 
 	this.left.on('click',function(){
-		selmanager.getCurrentSelBox().animate({width:'0%'});
-		selmanager.getCurrentSelBox().addClass('hidden');
-		selmanager.getPrev();
-		selmanager.getNextSelBox().removeClass('hidden');
-		selmanager.getNextSelBox().animate({width:'100%'});
+		selmanager.getCurrentSelBox().animate({width:'0%'},function(){
+			
+			selmanager.getCurrentSelBox().addClass('hidden');
+			selmanager.getPrev();
+			selmanager.getNextSelBox().removeClass('hidden');
+			selmanager.getNextSelBox().animate({width:'100%'});
+		});
+		
 	});
 };
 
