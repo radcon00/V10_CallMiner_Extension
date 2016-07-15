@@ -117,6 +117,18 @@ span.select2-dropdown--above{
 #select2-extNavBox-container{
 	color: white;
 }
+#select2-extNavAcoustics-container{
+	color: white;
+}
+#select2-extNavAttributes-container{
+	color: white;
+}
+#select2-extNavMeasures-container{
+	color: white;
+}
+#select2-extNavDimensions-container{
+	color: white;
+}
 .select2-selection{
 	background: rgba(0, 0, 0,0.1);
 }

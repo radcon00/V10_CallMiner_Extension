@@ -212,12 +212,21 @@ function uiManager() {
 	   	var self = this;
 		$('#ci_plusContainer').on('click',function(e){	
 			self.selectedCatClick();
-			$('.ballon-container:not(.ng-hide)').find('.fa-plus-circle').click()
+			var $elBubble = $('.ballon-container:not(.ng-hide)').find('.fa-plus-circle');
+			if($elBubble.length===1){
+				$('.ballon-container:not(.ng-hide)').find('.fa-plus-circle').click()
+			}
+			//chose the second item in the list it will be the plus element.
+			$('ul.ballon-container[ng-show="item.showIncludeExclude"]').not('.ng-hide').find('.fa-plus-circle').eq(1).click()
 		});
 
 		$('#ci_minusContainer').on('click',function(e){
 			self.selectedCatClick();
-			$('.ballon-container:not(.ng-hide)').find('.fa-minus-circle').click()
+			var $elBubble = $('ul.ballon-container[ng-show="item.showIncludeExclude"]').not('.ng-hide').find('.fa-minus-circle');
+			if($elBubble.length ===1){
+				$('.ballon-container:not(.ng-hide)').find('.fa-minus-circle').click();
+			}
+			$('ul.ballon-container[ng-show="item.showIncludeExclude"]').not('.ng-hide').find('.fa-minus-circle').eq(1).click();
 		});
 	};
 
@@ -232,11 +241,16 @@ function uiManager() {
 	
 	//helper function that click the selected category only if the ballon element is hidden
 	this.selectedCatClick = function(){
-
-		var textSelected = $('#extNavBox option:selected').text();
+//change the below code to this. uncommented the line to make it a generic search for the select item.
+		var textSelected = $('.select2:not(.hidden)').find('.select2-selection__rendered').attr('title');	
+//		var textSelected = $('#extNavBox option:selected').text();
 		
 		if (textSelected !== "" && $('.ballon-container:not(.ng-hide)').length===0) {
-			var $cats = this.getAllCategories();
+//			var $cats = this.getAllCategories();
+			var folder = $('.select2:not(.hidden)').find('.select2-selection__rendered').attr('id').split('ext')[1].split('-')[0];//this will spit out the folder name from the id of the element
+			if(folder==="NavBox"){folder="Categories";}
+			folder = folder.split('Nav')[1];
+			var $cats = folderGroup.prototype.getCurrentCategories(folder);
 			$cats.filter('div[title="' + textSelected +'"]').click()
 			
 		//running the alternate function to avoid the error the occurs when a category is updated.	
@@ -374,6 +388,7 @@ function folderGroup(group,identifier){
 			var option = "<option value='" + folderGroup +"'>"+catName + "</option>"; 
 			$sel2.append(option);
 		});
+		this.setEventsSel2();
 	};
 
 	this.getFolderGroupMembers= function(folder){
@@ -388,6 +403,36 @@ function folderGroup(group,identifier){
 		$('.select2').css("width","100%");
 		$('.select2-selection').css("background","rgba(0, 0, 0,0.1)");	
 		$('.select2-selection').css('border','none');
+	};
+	
+	this.setEventsSel2 = function()
+	{
+		//set the events for the select2 box
+		//add change event that will trigger the clicking of the category
+		var elId = '#'+ this.selectElement;
+		var self = this;
+		$(elId).on("change",function (e) {
+			var textSelected = $(elId +' option:selected').text();
+			
+			if (textSelected !== "") {
+				var $cats = self.getFolderGroupMembers(self.f_group);
+				$cats.filter('div[title="' + textSelected +'"]').click()
+				self.setCallCount(textSelected,$cats);
+				$('#extNavDetails').removeClass("hidden");
+				$('#ci_plusMinusContainer').removeClass('hidden');
+				
+			}
+			
+		});
+	
+		//add the unselect event to hide the call count and include and exclude section of the select2 box is cleared
+		$(elId).on("select2:unselect",function (e) {
+				
+				$('#extNavDetails').addClass('hidden');
+				$('#ci_plusMinusContainer').addClass('hidden');
+				
+			
+		});
 	};
 
 	this.initOnClick = function(placeholdertxt){
@@ -408,7 +453,23 @@ function folderGroup(group,identifier){
 		}
 		});
 	};
+	
+	this.setCallCount = function(catText,cats){
+		var $catEl = cats;
+
+		//this find the cat the looks at its parent container then looks for the span for call count			
+		var count = $catEl.filter('div[title="' + catText +'"]').parent().find('span[ng-show="::item.ItemCount >= 0"]').html(); 
+		$('#ci_catCount').html("Call Count: "+ count);
+	};
+	
+	
 }
+
+folderGroup.prototype.getCurrentCategories = function(folder){
+
+		var members = $('a').find("span[title='"+ folder +"']").parents("li").find("div .value-item");
+		return members;
+	};
 
 //this class manages the selectboxes so we know which one is currently visible
 function sel2Manager()
@@ -446,6 +507,7 @@ function sel2Manager()
 	};
 };
 
+//sets the events for the right and left icons used to navigate the folder groups.
 function navManager()
 {
 	this.left = $('#ci_back');
@@ -467,6 +529,8 @@ function navManager()
 		selmanager.getNextSelBox().animate({width:'100%'});
 	});
 };
+
+
 setTimeout(getCategoryNamesID, 4000);
 
 
