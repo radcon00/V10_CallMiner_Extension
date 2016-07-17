@@ -250,7 +250,8 @@ function uiManager() {
 	this.setCallCount = function(catText){
 		var $catEl = this.getAllCategories();
 
-		//this find the cat the looks at its parent container then looks for the span for call count			
+		//this find the cat the looks at its parent container then looks for the span for call count
+
 		var count = $catEl.filter('div[title="' + catText +'"]').parent().find('span[ng-show="::item.ItemCount >= 0"]').html(); 
 		$('#ci_catCount').html("Call Count: "+ count);
 	};
@@ -485,9 +486,10 @@ function folderGroup(group,identifier){
 	this.setCallCount = function(catText,cats){
 		var $catEl = cats;
 
-		//this find the cat the looks at its parent container then looks for the span for call count			
+		//this find the cat the looks at its parent container then looks for the span for call count	
+		var elID = navManager.prototype.getCallCountUIElement();		
 		var count = $catEl.filter('div[title="' + catText +'"]').parent().find('span[ng-show="::item.ItemCount >= 0"]').html(); 
-		$('#ci_catCount').html("Call Count: "+ count);
+		$(elID).html("Call Count: "+ count);
 	};
 	
 	
@@ -544,10 +546,27 @@ function navManager()
 	this.rigth.on('click',function(){
 		selmanager.getCurrentSelBox().animate({width:'0%'},function(){
 
+			var folderGroupCountElementID =  navManager.prototype.getCallCountUIElement();
+			$(folderGroupCountElementID).addClass('hidden');
 			selmanager.getCurrentSelBox().addClass('hidden');
 			selmanager.getNext();
 			selmanager.getNextSelBox().removeClass('hidden');
 			selmanager.getNextSelBox().animate({width:'100%'});
+			var newfolderGroupCountElementID = navManager.prototype.getCallCountUIElement();
+			$(newfolderGroupCountElementID).removeClass('hidden');
+
+			//check if the plus and minus signs should be visable
+			var selBoxID = navManager.prototype.getSelectElementID();
+			var textSelected = $(selBoxID +' option:selected').text();
+			if(textSelected ===""){
+				$('#extNavDetails').addClass('hidden');
+				$('#ci_plusMinusContainer').addClass('hidden');
+			}
+
+			else{
+				$('#extNavDetails').removeClass("hidden");
+				$('#ci_plusMinusContainer').removeClass('hidden');
+			}
 
 			//check if the current select2 box is for categories if yes make the building block visible.
 			if(navManager.prototype.isCategoryBox()){
@@ -563,10 +582,27 @@ function navManager()
 	this.left.on('click',function(){
 		selmanager.getCurrentSelBox().animate({width:'0%'},function(){
 			
+			var folderGroupCountElementID =  navManager.prototype.getCallCountUIElement();
+			$(folderGroupCountElementID).addClass('hidden');
 			selmanager.getCurrentSelBox().addClass('hidden');
 			selmanager.getPrev();
 			selmanager.getNextSelBox().removeClass('hidden');
 			selmanager.getNextSelBox().animate({width:'100%'});
+			var newfolderGroupCountElementID = navManager.prototype.getCallCountUIElement();
+			$(newfolderGroupCountElementID).removeClass('hidden');
+			var selBoxID = navManager.prototype.getSelectElementID();
+
+			//check if the plus and minus signs should be visable
+			var textSelected = $(selBoxID +' option:selected').text();
+			if(textSelected ===""){
+				$('#extNavDetails').addClass('hidden');
+				$('#ci_plusMinusContainer').addClass('hidden');
+			}
+
+			else{
+				$('#extNavDetails').removeClass("hidden");
+				$('#ci_plusMinusContainer').removeClass('hidden');
+			}
 
 			//check if the current select2 box is for categories if yes make the building block visible.
 			if(navManager.prototype.isCategoryBox()){
@@ -584,6 +620,27 @@ navManager.prototype.isCategoryBox = function()
 {
 	var folder = $('.select2:not(.hidden)').find('.select2-selection__rendered').attr('id').split('ext')[1].split('-')[0];
 	return folder === "NavBox";
+};
+
+navManager.prototype.getCallCountUIElement = function(){
+
+	var folder = $('.select2:not(.hidden)').find('.select2-selection__rendered').attr('id').split('ext')[1].split('-')[0];//this will spit out the folder name from the id of the element
+			if(folder==="NavBox"){
+				folder="#ci_catCount";
+				return folder;
+			}
+			folder = folder.split('Nav')[1];
+			var elementID = "#"+ folder + "_Count";
+			//return the element id of the call count span that needs to be populated.
+			return elementID;;
+			
+		
+			
+			
+};
+
+navManager.prototype.getSelectElementID = function(){
+	return "#"+$('.select2:not(.hidden)').find('.select2-selection__rendered').attr('id').split('-')[1];
 };
 
 

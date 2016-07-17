@@ -98,10 +98,12 @@ span.select2-dropdown--above{
 	margin-top: 0px;
 	display: inherit;
 }
-#ci_catCount{
+.ci_catCount{
 	font-size: medium;
 	white-space: nowrap;
 }
+
+
 #ci_divider{
 	margin-left: 7px;
 	margin-right: 7px;
