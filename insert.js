@@ -265,10 +265,18 @@ function uiManager() {
 		if (textSelected !== "" && $('.ballon-container:not(.ng-hide)').length===0) {
 
 			var folder = $('.select2:not(.hidden)').find('.select2-selection__rendered').attr('id').split('ext')[1].split('-')[0];//this will spit out the folder name from the id of the element
-			if(folder==="NavBox"){folder="Categories";}
-			folder = folder.split('Nav')[1];
-			var $cats = folderGroup.prototype.getCurrentCategories(folder);
-			$cats.filter('div[title="' + textSelected +'"]').click()
+			if(folder==="NavBox"){
+				
+				folder="Categories";
+				var $cats = folderGroup.prototype.getCurrentCategories(folder);
+				$cats.filter('div[title="' + textSelected +'"]').click();
+			}
+			else{
+				folder = folder.split('Nav')[1];
+				var $cats = folderGroup.prototype.getCurrentCategories(folder);
+				$cats.filter('div[title="' + textSelected +'"]').click();
+			}
+			
 			
 		//running the alternate function to avoid the error the occurs when a category is updated.	
 			//$('#usge_Count').text(getCallCount(valSelected));				
