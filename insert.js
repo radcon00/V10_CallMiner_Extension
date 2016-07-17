@@ -548,6 +548,14 @@ function navManager()
 			selmanager.getNext();
 			selmanager.getNextSelBox().removeClass('hidden');
 			selmanager.getNextSelBox().animate({width:'100%'});
+
+			//check if the current select2 box is for categories if yes make the building block visible.
+			if(navManager.prototype.isCategoryBox()){
+				$('#ci_cataddIconContainer').removeClass('hidden');
+			}
+			else{
+				$('#ci_cataddIconContainer').addClass('hidden');
+			}
 		});
 		
 	});
@@ -559,9 +567,23 @@ function navManager()
 			selmanager.getPrev();
 			selmanager.getNextSelBox().removeClass('hidden');
 			selmanager.getNextSelBox().animate({width:'100%'});
+
+			//check if the current select2 box is for categories if yes make the building block visible.
+			if(navManager.prototype.isCategoryBox()){
+				$('#ci_cataddIconContainer').removeClass('hidden');
+			}
+			else{
+				$('#ci_cataddIconContainer').addClass('hidden');
+			}
 		});
 		
 	});
+};
+
+navManager.prototype.isCategoryBox = function()
+{
+	var folder = $('.select2:not(.hidden)').find('.select2-selection__rendered').attr('id').split('ext')[1].split('-')[0];
+	return folder === "NavBox";
 };
 
 
