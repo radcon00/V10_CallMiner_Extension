@@ -8,46 +8,69 @@ var template;
 var imageLocation;
 var selmanager = new sel2Manager();
 
-var checkReady = function(){
+var extension  = function(){
 	if($("body.erk-unselectable").length>0){
-			console.log("i am hooked up");
-			//set up select2 reference 
-			$('head').append("<script src='//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.min.js'></script>");
 			
-			$.get(chrome.extension.getURL('Templates/ExtensionUI2.html'),function(data){
-				//get the html template data for insertion
-				template = data;
-			});
-			//get the url of the image we want to use as an icon
-			imageLocation = chrome.extension.getURL('images/buildingblocks.png');
+			var VTenDom = new V10dom();
 			
-			//this will set upl the events on the navbar to keep adding back the extension when the page changes 
+			//set select2 cdn dependency
+			VTenDom.extCDNDependencies();
+
+			//get and set resource data in the extension
+			VTenDom.getInjectedResources();
+			
+			//this sets the nav bar events for the search bar syntax shortcuts.
 			var uiMan = new uiManager();
 			uiMan.setNavBarEvents();			
 
 			//add extension on initiall app load
 			uiMan.addExtension();	
 
-			//We need to track when the url changes to manage the ajax requests effect on the dom.
-			$(window).on('hashchange', function(e){
-
-				if(window.location.hash.split("/")[1]==="AdvancedSearch" && window.location.hash.split("/").length ===2){
-				//	uiMan.addExtension();
-					uiMan.setCatBuilderSearchBoxEvents();	
-				}
-
-				if(window.location.hash.split("/")[1]==="Search" && window.location.hash.split("/").length==3){
-				//	uiMan.addExtension();
-					uiMan.setSearchBoxEvents();
-				}
-				
-			});					
+			//track page navigation
+			var VTenDom = new V10dom();
+			VTenDom.setWindowEvents(uiMan);
 			
 		}
 	
 
 };
-$(checkReady);
+$(extension);
+
+var V10dom = function(){
+	this.setWindowEvents = function(UIManager){
+		
+		//We need to track when the url changes to manage the ajax requests effect on the dom.
+			var uiMan = UIManager;
+			$(window).on('hashchange', function(e){
+
+				if(window.location.hash.split("/")[1]==="AdvancedSearch" && window.location.hash.split("/").length ===2){
+		
+					uiMan.setCatBuilderSearchBoxEvents();	
+				}
+
+				if(window.location.hash.split("/")[1]==="Search" && window.location.hash.split("/").length==3){
+				
+					uiMan.setSearchBoxEvents();
+				}
+				
+			});					
+	};
+
+	this.getInjectedResources = function(){
+
+		$.get(chrome.extension.getURL('Templates/ExtensionUI2.html'),function(data){
+				//get the html template data for insertion
+				template = data;
+			});
+			//get the url of the image we want to use as an icon
+		imageLocation = chrome.extension.getURL('images/buildingblocks.png');
+	};
+
+	this.extCDNDependencies = function(){
+			//set up select2 reference 
+			$('head').append("<script src='//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.min.js'></script>");	
+	};
+};
 
 function uiManager() {
 	this.setNavBarEvents = function(){
