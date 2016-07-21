@@ -72,6 +72,35 @@ var V10dom = function(){
 	};
 };
 
+V10dom.prototype.syntaxShortCuts= function name() 
+{
+							
+							var searchText = $(this).val();
+							var operators = ["NOT BEFORE","NOT AFTER","NOT NEAR","BEFORE","AFTER","NEAR","OR"];
+							var shortcuts = ["!>","!<","!=",">","<","=","^"];
+							var tempPosition = $(this).prop('selectionStart');
+							for (var i = 0; i < shortcuts.length; i++) {
+								var shortcut = shortcuts[i];
+								//var re = new RegExp(shortcut,'g');
+								if (searchText.indexOf(shortcut) > -1) {
+									searchText = searchText.replace(shortcut,operators[i])
+									$(this).val(searchText);
+									tempPosition +=  (operators[i].length - shortcut.length)
+									$(this).setCursorPosition(tempPosition);
+									break;
+								}
+								
+							}					
+						
+						
+
+};
+		
+
+			
+			
+		
+
 function uiManager() {
 	this.setNavBarEvents = function(){
 		//this function makes sure that the search box events that provide syntax shortcuts are set.
@@ -141,6 +170,8 @@ function uiManager() {
 				attributes.initOnClick("ATTRIBUTES QUICK SELECT");
 				measures.initOnClick("MEASURES QUICK SELECT");
 				measures.cssSelect2();
+
+				//initialize the right and left navigation icons and adds their events.
 				var navsetup = new navManager();
 				clearInterval(intervalHandleCats);
 
@@ -205,25 +236,7 @@ function uiManager() {
 			
 			clearInterval(setintHandle);
 			//event handler for the search box key up event. We are going to add shortcut syntax to the text box
-			$('#searchBox').keyup(function name() {
-				
-				var searchText = $(this).val();
-				var operators = ["NOT BEFORE","NOT AFTER","NOT NEAR","BEFORE","AFTER","NEAR","OR"];
-				var shortcuts = ["!>","!<","!=",">","<","=","^"];
-				var tempPosition = $(this).prop('selectionStart');
-				for (var i = 0; i < shortcuts.length; i++) {
-					var shortcut = shortcuts[i];
-					//var re = new RegExp(shortcut,'g');
-					if (searchText.indexOf(shortcut) > -1) {
-						searchText = searchText.replace(shortcut,operators[i])
-						$(this).val(searchText);
-						tempPosition +=  (operators[i].length - shortcut.length)
-						$(this).setCursorPosition(tempPosition);
-						break;
-					}
-					
-				}
-			});
+			$('#searchBox').keyup(V10dom.prototype.syntaxShortCuts);
 			
 			//event handler for the search box focus out event. It will set the caretposition variable used in the function that adds the category syntax to the search box.
 			$('#searchBox').focusout(function name() {
@@ -236,44 +249,25 @@ function uiManager() {
 	};
 
 	//the addition of this event to the search box is different on this page becuase the element is frequently built then destroyed.
-	this.setCatBuilderSearchBoxEvents = function(){
+	this.setCatBuilderSearchBoxEvents = function()
+	{
 
-		var setintHandle = setInterval(function(){
-			console.log('in cat builder')
+		var setintHandle = setInterval(function()
+		{
+			
 			if($('button[ng-click="addComponent();"]').length===0){return;}
-			console.log('getting ready to set up')
+			
 			clearInterval(setintHandle);
 			//monitor this element for additions to it's dom. We are looking for the addition of a textarea element.
 			$('#advancedSearchContainer').arrive("textarea.search-box",function(e){
-				$('.search-box').keyup(function name() {
-							
-							var searchText = $(this).val();
-							var operators = ["NOT BEFORE","NOT AFTER","NOT NEAR","BEFORE","AFTER","NEAR","OR"];
-							var shortcuts = ["!>","!<","!=",">","<","=","^"];
-							var tempPosition = $(this).prop('selectionStart');
-							for (var i = 0; i < shortcuts.length; i++) {
-								var shortcut = shortcuts[i];
-								//var re = new RegExp(shortcut,'g');
-								if (searchText.indexOf(shortcut) > -1) {
-									searchText = searchText.replace(shortcut,operators[i])
-									$(this).val(searchText);
-									tempPosition +=  (operators[i].length - shortcut.length)
-									$(this).setCursorPosition(tempPosition);
-									break;
-								}
-								
-							}
-						});
-						
-						//event handler for the search box focus out event. It will set the caretposition variable used in the function that adds the category syntax to the search box.
-						$('.search-box').focusout(function name() {
-							
-							caretPostion = $(this).prop('selectionStart');
-						});
+				$('.search-box').keyup(V10dom.prototype.syntaxShortCuts);});
+
+			//event handler for the search box focus out event. It will set the caretposition variable used in the function that adds the category syntax to the search box.
+			$('.searchBox').focusout(function name() {
+				
+				caretPostion = $(this).prop('selectionStart');
 			});
 
-			
-			
 		},500);
 	};
 
