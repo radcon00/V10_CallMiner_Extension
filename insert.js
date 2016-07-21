@@ -74,6 +74,7 @@ var V10dom = function(){
 
 function uiManager() {
 	this.setNavBarEvents = function(){
+		//this function makes sure that the search box events that provide syntax shortcuts are set.
 		var self = this;
 		var intervalHandleNav;
 			intervalHandleNav = setInterval(function(){
@@ -85,7 +86,7 @@ function uiManager() {
 						return;
 					}
 					
-					//self.addExtension();
+					
 					self.setSearchBoxEvents();
 				});
 
@@ -94,7 +95,7 @@ function uiManager() {
 					
 					
 					
-					//self.addExtension();
+					
 					self.setCatBuilderSearchBoxEvents();
 				});
 				clearInterval(intervalHandleNav);
@@ -114,30 +115,27 @@ function uiManager() {
 	};
 
 	this.addExtension = function () {
-		//only add if it is not present. if it is return.
-		//if( $("span[title='Chrome Extensions']").length>0){
-		//	return
-		//}
+		
 		var intervalHandleCats;
 		var self = this;
 			intervalHandleCats = setInterval(function(){
 
 				if($('ul.main-menu.nav').length>0){
 				var $navMenu = $('ul.main-menu.nav');
-				console.log("adding the extension");
+				//console.log("adding the extension");
 				$navMenu.append(template);
 				self.addEventsforplus_minus();
 				self.setCssCatBB();		
 				self.setClickEventCatBB();		
-				self.setUpSelect2();	
-				self.setExtensionUIEvents();
 
 				//set up the additional select boxes for the other folder groups
+				var categories = new folderGroup("Categories","extNavBox");
 				var dimensions = new folderGroup("Dimensions","extNavDimensions");
 				var acoustics = new folderGroup("Acoustics","extNavAcoustics");
 				var attributes = new folderGroup("Attributes", "extNavAttributes");
 				var measures = new folderGroup("Measures", "extNavMeasures");
 
+				categories.initOnClick("CATEGORY QUICK SELECT");
 				dimensions.initOnClick("DIMENSIONS QUICK SELECT");
 				acoustics.initOnClick("ACOUSTICS QUICK SELELCT");
 				attributes.initOnClick("ATTRIBUTES QUICK SELECT");
@@ -147,104 +145,7 @@ function uiManager() {
 				clearInterval(intervalHandleCats);
 
 			}},500);
-	};
-
-	this.setExtensionUIEvents = function(){
-		var $el = $("span[title='Chrome Extensions']").parent();
-		var $elContainer = $("span[title='Chrome Extensions']").parents("a");
-		var self = this;
-		
-		//controls if the container for the extension is visible or not
-		$elContainer.on('click',function(e){
-			if($el.parents('a').find('span.fa-caret-right').length>0){
-				$el.parents('a').find('span.fa').removeClass("fa-caret-right").addClass("fa-caret-down");
-				$el.parents(".tree-node").next().removeClass("hidden");
-			}
-			else{
-				$el.parents('a').find('span.fa').removeClass("fa-caret-down").addClass("fa-caret-right");
-				$el.parents(".tree-node").next().addClass("hidden");
-			}
-			
-		});
-
-		//this will load the select2 with category names when it opens first
-		$('#extNavBox').on("select2:opening",function(e) {
-		if ($('#extNavBox').children('option').length<2) {
-			self.setCategoryinSelect2();
-		}
-		});
-
-	};
-	this.setUpSelect2 = function(){
-		$('#extNavBox').select2({
-		placeholder: "CATEGORY QUICK SELECT",
-		allowClear:true
-		});
-	var instance = $('span:contains('+"CATEGORY QUICK SELECT"+')').first();
-	selmanager.add(instance);	
-	var self = this;	
-	//set the events for the select2 box
-	//add change event that will trigger the clicking of the category
-	$('#extNavBox').on("change",function (e) {
-		var textSelected = $('#extNavBox option:selected').text();
-		
-		if (textSelected !== "") {
-			var $cats = self.getAllCategories();
-			$cats.filter('div[title="' + textSelected +'"]').click()
-			self.setCallCount(textSelected);
-			$('#extNavDetails').removeClass("hidden");
-			$('#ci_plusMinusContainer').removeClass('hidden');
-			
-		}
-		
-	});
-
-	//add the unselect event to hide the call count and include and exclude section of the select2 box is cleared
-	$('#extNavBox').on("select2:unselect",function (e) {
-			
-			$('#extNavDetails').addClass('hidden');
-			$('#ci_plusMinusContainer').addClass('hidden');
-			
-		
-	});
-
-	//format select2 a bit it needs to be longer;
-	$('.select2').css("width","100%");
-	$('.select2-selection').css("background","rgba(0, 0, 0,0.1)");	
-	$('.select2-selection').css('border','none');
-	};
-
-	this.getAllCategories = function(){
-		var cats = $('a').find("span[title='Categories']").parents("li").find("div .value-item");
-		return cats;
-	};
-
-	this.setCategoryinSelect2 = function(){
-		var $cats = this.getAllCategories();
-		var $sel2 = $('#extNavBox');
-		
-
-
-		$cats.each(function(i,e){
-			var catName = $(e).html();
-			var folderGroup = $(e).parents('div.row:not(#sidebar)').prev().find('span[title]').html();
-			var groupParent = "Categories";
-
-			var optionGroup = "<optgroup label='"+folderGroup+"' id='"+groupParent+"-"+folderGroup+"'></optgroup>";
-			var option = "<option value='" + folderGroup +"'>"+catName + "</option>"; 
-			if($sel2.find('optgroup[id="'+groupParent+"-"+folderGroup+'"]').length===0){
-
-				//if the option group already exists add the option to it.
-				$sel2.append(optionGroup);
-				$('optgroup[id="'+groupParent+"-"+folderGroup+'"]').append(option);
-			}
-			else{
-
-				$('optgroup[id="'+groupParent+"-"+folderGroup+'"]').append(option);
-			}
-
-		});
-	};
+	};	
 
 	this.addEventsforplus_minus = function(){
        //this adds or removes the category from the search filters
@@ -269,16 +170,7 @@ function uiManager() {
 		});
 	};
 
-	//set the call count for the selected category
-	this.setCallCount = function(catText){
-		var $catEl = this.getAllCategories();
-
-		//this find the cat the looks at its parent container then looks for the span for call count
-
-		var count = $catEl.filter('div[title="' + catText +'"]').parent().find('span[ng-show="::item.ItemCount >= 0"]').html(); 
-		$('#ci_catCount').html("Call Count: "+ count);
-	};
-	
+		
 	//helper function that click the selected category only if the ballon element is hidden
 	this.selectedCatClick = function(){
 
@@ -298,12 +190,9 @@ function uiManager() {
 				folder = folder.split('Nav')[1];
 				var $cats = folderGroup.prototype.getCurrentCategories(folder);
 				$cats.filter('div[title="' + textSelected +'"]').click();
-			}
-			
-			
-		//running the alternate function to avoid the error the occurs when a category is updated.	
-			//$('#usge_Count').text(getCallCount(valSelected));				
-			//toggleInfoBox();
+			}	
+		
+		
 			
 		}	
 	};
@@ -504,7 +393,11 @@ function folderGroup(group,identifier){
 		});
 
 		this.$sel2Instance = $('span:contains('+placeholdertxt+')').first();
-		this.$sel2Instance.addClass('hidden');
+		if(self.f_group!=="Categories")
+		{	//We need to have at least one select2 box visible at the start of the application.
+			this.$sel2Instance.addClass('hidden');
+		}
+	
 		selmanager.add(this.$sel2Instance);
 		//this will load the select2 with memberinfo when it opens first
 		$('#'+ self.selectElement).on("select2:opening",function(e) {
