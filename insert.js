@@ -44,12 +44,14 @@ var V10dom = function(){
 			$(window).on('hashchange', function(e){
 
 				if(window.location.hash.split("/")[1]==="AdvancedSearch" && window.location.hash.split("/").length ===2){
-		
+
+					caretPostion = 0; //reset caret position everytime you navigate to a new tab since the previous tabs data is gone
 					uiMan.setCatBuilderSearchBoxEvents();	
 				}
 
 				if(window.location.hash.split("/")[1]==="Search" && window.location.hash.split("/").length==3){
-				
+
+					caretPostion = 0; //reset caret position everytime you navigate to a new tab since the previous tabs data is gone
 					uiMan.setSearchBoxEvents();
 				}
 				
@@ -95,6 +97,8 @@ V10dom.prototype.syntaxShortCuts= function name()
 						
 
 };
+
+
 		
 
 			
@@ -277,7 +281,16 @@ function uiManager() {
 
 	this.setClickEventCatBB = function (){
 		$('.BBIcon').on('click',function(e){
-
+			var $searchBox;
+			if($('#searchBox').length>0)
+			{
+				$searchBox = $('#searchBox');
+			}
+			else
+			{
+				$searchBox = $('.search-box');
+			}
+			
 			var textSelected = $('#extNavBox option:selected').text();
 			var folderGroup = $('#extNavBox option:selected').val();
 		
@@ -285,17 +298,17 @@ function uiManager() {
 				
 				//create the category search syntax then append it to the search box.
 				var catSyntax = "CAT:["+ folderGroup +"."+textSelected +"]";
-				var currentVal = $('#searchBox').val();
+				var currentVal = $searchBox.val()||""; //if the searchbox is empty use empty string.
 					
 			
-				$('#searchBox').focus();
+				$searchBox.focus();
 				if (caretPostion) {
 					var newTxt = currentVal.slice(0,caretPostion) + catSyntax + currentVal.slice(caretPostion,currentVal.length); //set the position of the catSyntax within existing text
-					$('#searchBox').val(newTxt); 
-					$('#searchBox').setCursorPosition(caretPostion + catSyntax.length);//adjust the curser position by adjusting by the amount of the inserted text
+					$searchBox.val(newTxt); 
+					$searchBox.setCursorPosition(caretPostion + catSyntax.length);//adjust the curser position by adjusting by the amount of the inserted text
 					return;
 				}			
-				$('#searchBox').val(currentVal.length>0 ? currentVal + " " + catSyntax : catSyntax ); //check if the text box is blank so you can position the new text correctly.
+				$searchBox.val(currentVal.length>0 ? currentVal + " " + catSyntax : catSyntax ); //check if the text box is blank so you can position the new text correctly.
 			}
 
 		});
