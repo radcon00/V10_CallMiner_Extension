@@ -87,10 +87,11 @@ span.select2-dropdown--above{
 	overflow-y: hidden;
 }
 #ci_plusMinusContainer{
-	float: right;
-	margin-top: 10px;
+	/*float: right;*/
+	margin-top: 5%;
 	display: inherit;
-    
+    width: 100%;
+	margin-right: 5%;
 }
 #ci_catCountContainer{
 	
@@ -153,4 +154,39 @@ span.select2-dropdown--above{
 	width:40px;
 	height: 38px;
 	margin-bottom: 7px;
+}
+
+@media screen and (max-width: 1690px){
+	#ci_backContainer{right: 20px;}
+	#ci_catContainer{right: 35px;
+		width: 250px;
+	}
+	#ci_forwardContainer{right: 50px;}
+	#extNavDetails{right: 70px;}
+	#ci_plusMinusContainer{right: 107px;}
+	.BBIcon{
+		width: 32px;
+		height: 30px;
+	}
+	#ci_plusContainer span{
+		font-size: 1.6em;
+	}
+	#ci_minusContainer span{
+		font-size: 1.6em;
+	}
+	#ci_catCountContainer span{
+		font-size: small;
+	}
+	#ci_backContainer span{
+		font-size: large;
+	}
+	#ci_forwardContainer span{
+		font-size: large;
+	}
+	.select2.select2-container{
+		font-size: 12px;
+	}
+	#ci_minusContainer{
+		right: 5px;
+	}
 }
