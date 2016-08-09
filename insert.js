@@ -159,7 +159,8 @@ function uiManager() {
 				$navMenu.append(template);
 				self.addEventsforplus_minus();
 				self.setCssCatBB();		
-				self.setClickEventCatBB();		
+				self.setClickEventCatBB();
+				self.addEventForResponsiveElement();		
 
 				//set up the additional select boxes for the other folder groups
 				var categories = new folderGroup("Categories","extNavBox");
@@ -181,6 +182,18 @@ function uiManager() {
 
 			}},500);
 	};	
+
+	this.addEventForResponsiveElement = function(){
+		//this will set the click event for the more button to display the hidden extension components
+		$("#ci_More").on("click",function(e){
+			$("#ci_backContainer").toggle();
+			$("#ci_forwardContainer").toggle();
+			$("#ci_catContainer").toggle();
+			$("#extNavDetails").toggle();
+			$("#ci_plusMinusContainer").toggle();
+			
+		});
+	};
 
 	this.addEventsforplus_minus = function(){
        //this adds or removes the category from the search filters
