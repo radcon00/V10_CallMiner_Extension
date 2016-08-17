@@ -186,11 +186,16 @@ function uiManager() {
 	this.addEventForResponsiveElement = function(){
 		//this will set the click event for the more button to display the hidden extension components
 		$("#ci_More").on("click",function(e){
-			$("#ci_backContainer").toggle();
-			$("#ci_forwardContainer").toggle();
-			$("#ci_catContainer").toggle();
-			$("#extNavDetails").toggle();
-			$("#ci_plusMinusContainer").toggle();
+			var $catWrapper = $("#ci_catWrapper");
+			if($catWrapper.css("display")==="none")
+			{
+				$catWrapper.css("display","flex");
+			}
+			else{
+				$catWrapper.css("display","none");
+			}
+			
+			
 			
 		});
 	};
@@ -433,7 +438,7 @@ function folderGroup(group,identifier){
 		//this find the cat the looks at its parent container then looks for the span for call count	
 		var elID = navManager.prototype.getCallCountUIElement();		
 		var count = $catEl.filter('div[title="' + catText +'"]').parent().find('span[ng-show="::item.ItemCount >= 0"]').html(); 
-		$(elID).html("Call Count: "+ count);
+		$(elID).html(count);
 	};
 	
 	
