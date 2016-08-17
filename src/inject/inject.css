@@ -309,16 +309,36 @@ span.select2-dropdown--above{
 		display: none;
 		position: fixed;
     	top: 40px;
-    	right: 195px;
+    	right: 0px;
     	box-shadow: rgba(0, 0, 0, 0.2) 0px 8px 16px 0px;
     	background-color: rgb(0, 105, 145);
+
 	}
-	#extDetailsWrapper{
-		display: none;
-	}
+	
 	
 	#ci_plusMinusContainer{
 		overflow: visible;
+	}
+	#ci_forwardContainer {
+		order: 9;
+	}
+	#ci_catContainer{
+		order: 8;
+	}
+	#ci_backContainer{
+		order: 7;
+	}
+	#ci_cataddIconContainer{
+		left: -30px;
+	}
+	#ci_plusContainer{
+		position: initial;
+	}
+	#extDetailsWrapper {
+		left: 50px;
+	}
+	#extNavDetails {
+		margin-right: 10px;
 	}
 }
 
