@@ -283,11 +283,11 @@ span.select2-dropdown--above{
 @media screen and (min-width:994px) and (max-width:1412px){
 	
 	.select2.select2-container{
-		font-size: 14px;
+		font-size: 16px;
 	}
 
 	#ci_catCountContainer span{
-		font-size: medium;
+		font-size: x-large;
 	}
 
 	#ci_More_Text{
@@ -321,24 +321,36 @@ span.select2-dropdown--above{
 	}
 	#ci_forwardContainer {
 		order: 9;
+		top: 11px;
 	}
 	#ci_catContainer{
 		order: 8;
+		margin-top: 15px;
 	}
 	#ci_backContainer{
 		order: 7;
+		z-index: 100;
+		top:11px;	
 	}
 	#ci_cataddIconContainer{
 		left: -30px;
 	}
 	#ci_plusContainer{
 		position: initial;
+		left:-15px;
+		position: relative;
 	}
 	#extDetailsWrapper {
 		left: 50px;
 	}
 	#extNavDetails {
 		margin-right: 10px;
+	}
+	#ci_plusContainer span{
+		font-size: 2em;
+	}
+	#ci_minusContainer span{
+		font-size: 2em;
 	}
 }
 
