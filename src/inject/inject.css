@@ -229,6 +229,10 @@ span.select2-dropdown--above{
 	}
 	#ci_minusContainer{
 		right: 5px;
+		top: -5px;
+	}
+	#ci_plusContainer{
+		top: -5px;
 	}
 	#ci_More{
 		display: none;
