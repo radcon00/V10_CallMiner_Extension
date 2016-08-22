@@ -242,41 +242,9 @@ span.select2-dropdown--above{
 }
 
 @media screen and (max-width:993px){
-	#ci_backContainer{
-		left: -505px;
-    	top: -41px;
-	}
-
-	#ci_catContainer{
-		left: -520px;
-    	top: -40px;
-	}
-
-	#ci_forwardContainer{
-		left: -533px;
-    	top: -41px;
-	}
-
-	#extNavDetails{
-		left: -533px;
-    	top: -43px;
-	}
-
-	#ci_plusMinusContainer{
-		left: -563px;
-    	top: -43px;
-	}
-
-	.select2.select2-container{
-		font-size: 14px;
-	}
-
-	#ci_catCountContainer span{
-		font-size: medium;
-	}
-
-	#ci_More{
-		display: none;
+	#ci_mainWrapper{
+		left: -600px;
+    	top: -50px;
 	}
 }
 
@@ -321,16 +289,16 @@ span.select2-dropdown--above{
 	}
 	#ci_forwardContainer {
 		order: 9;
-		top: 11px;
+		top: 6px;
 	}
 	#ci_catContainer{
 		order: 8;
-		margin-top: 15px;
+		margin-top: 10px;
 	}
 	#ci_backContainer{
 		order: 7;
 		z-index: 100;
-		top:11px;	
+		top:6px;	
 	}
 	#ci_cataddIconContainer{
 		left: -30px;
