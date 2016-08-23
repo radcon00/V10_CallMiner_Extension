@@ -250,6 +250,9 @@ span.select2-dropdown--above{
 		left: -600px;
     	top: -50px;
 	}
+	#ci_catWrapper{
+		display: flex;
+	}
 }
 
 @media screen and (min-width:994px) and (max-width:1412px){

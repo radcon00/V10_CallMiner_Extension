@@ -160,7 +160,8 @@ function uiManager() {
 				self.addEventsforplus_minus();
 				self.setCssCatBB();		
 				self.setClickEventCatBB();
-				self.addEventForResponsiveElement();		
+				self.addEventForResponsiveElement();	
+				self.monitorWindowSize(); //this checks the window size and adjustes the css according to the current css properties.	
 
 				//set up the additional select boxes for the other folder groups
 				var categories = new folderGroup("Categories","extNavBox");
@@ -199,6 +200,15 @@ function uiManager() {
 			
 		});
 	};
+
+	this.monitorWindowSize = function(){
+		$(window).resize(function(){
+			if ($("#ci_More").css("display")==="none")   {
+				var $catWrapper = $("#ci_catWrapper");
+				$catWrapper.css("display","flex");
+			}
+		});
+	}
 
 	this.addEventsforplus_minus = function(){
        //this adds or removes the category from the search filters
