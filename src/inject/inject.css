@@ -1,64 +1,6 @@
 /**
  * Place your custom CSS styles here.
  **/
-.category_selector{
-	position: relative;
-	float: right;
-	left: 650px;
-	height: 23px;
-	border: 3px solid #3b6e8f ;
-	
-	
-}
-
-.rowFormat{
-	color: white;
-	font-size: small;
-}
-
-.usgeCountContainer{
-	margin: 0 auto;
-	margin-top: 6px;
-	width: 20%;
-	
-	
-}
-.usgeButton{
-	background-color: azure;
-	margin-left: 20px;
-}
-.usgeContainerPlusorMinus{
-	width: 50%;
-    float: left;
-}
-
-
-.positionInclude{
-	margin-left: 60px;
-	margin-top: 8px;
-	color: white;
-	background: green;
-}
-.positionExclude{
-	margin-left: 30px;
-	margin-top: 8px;
-	color: white;
-	background: red;
-}
-
-.usge_attr{
-	border-radius: 25px;
-	margin-top: 5px;
-	margin-left: 70px;
-}
-
-.usgeButton2{
-	background-color: azure;
-	margin-left: 10px;
-}
-span.select2-dropdown--above{
-	z-index: 10000;
-}
 
 .prettyPrint{
 	float: right;
