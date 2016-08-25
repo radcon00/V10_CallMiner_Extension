@@ -527,7 +527,7 @@ function navManager()
 
 	this.rigth.on('click',function(){
 
-		if(!navManager.prototype.allBucketsLoaded()){
+		if(!navManager.prototype.allBucketsLoaded()){//check if the buckests are loaded if not load them
 			var bucketsAndIdentifiers = uiManager.prototype.getBucketNamesAndIdentifier();
 			bucketsAndIdentifiers.buckets.forEach(function(e,i,a){
 
@@ -573,6 +573,18 @@ function navManager()
 	});
 
 	this.left.on('click',function(){
+
+		if(!navManager.prototype.allBucketsLoaded()){//check if the buckests are loaded if not load them
+			var bucketsAndIdentifiers = uiManager.prototype.getBucketNamesAndIdentifier();
+			bucketsAndIdentifiers.buckets.forEach(function(e,i,a){
+
+				var bucket = new folderGroup(e,bucketsAndIdentifiers.identifiers[i]);
+				bucket.initOnClick(e.toUpperCase()+" QUICK SELECT");
+				bucket.cssSelect2();
+			});
+
+		}
+
 		selmanager.getCurrentSelBox().animate({width:'0%'},function(){
 			
 			var folderGroupCountElementID =  navManager.prototype.getCallCountUIElement();
