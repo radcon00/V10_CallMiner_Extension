@@ -171,10 +171,13 @@
 	}
 	#ci_minusContainer{
 		right: 5px;
-		top: -5px;
+		top: -5px;		
+    	margin-top: 2px;
 	}
 	#ci_plusContainer{
 		top: -5px;
+		margin-left: 10px;    
+    	margin-top: 2px;
 	}
 	#ci_More{
 		display: none;
