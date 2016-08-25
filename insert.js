@@ -165,7 +165,9 @@ function uiManager() {
 
 				//set up the additional select boxes for the other folder groups
 				var categories = new folderGroup("Categories","extNavBox");
-				var dimensions = new folderGroup("Dimensions","extNavDimensions");
+				categories.initOnClick("CATEGORY QUICK SELECT");
+
+				/*var dimensions = new folderGroup("Dimensions","extNavDimensions");
 				var acoustics = new folderGroup("Acoustics","extNavAcoustics");
 				var attributes = new folderGroup("Attributes", "extNavAttributes");
 				var measures = new folderGroup("Measures", "extNavMeasures");
@@ -174,8 +176,9 @@ function uiManager() {
 				dimensions.initOnClick("DIMENSIONS QUICK SELECT");
 				acoustics.initOnClick("ACOUSTICS QUICK SELELCT");
 				attributes.initOnClick("ATTRIBUTES QUICK SELECT");
-				measures.initOnClick("MEASURES QUICK SELECT");
-				measures.cssSelect2();
+				measures.initOnClick("MEASURES QUICK SELECT");*/
+
+				categories.cssSelect2();
 
 				//initialize the right and left navigation icons and adds their events.
 				var navsetup = new navManager();
@@ -183,6 +186,8 @@ function uiManager() {
 
 			}},500);
 	};	
+
+	
 
 	this.addEventForResponsiveElement = function(){
 		//this will set the click event for the more button to display the hidden extension components
@@ -345,6 +350,24 @@ function uiManager() {
 	
 }
 
+uiManager.prototype.getBucketNamesAndIdentifier = function(){
+		var bucketNames = [];
+		$("li.angular-ui-tree-node.ng-scope").find("a[ng-click] div.tree-label span.ng-binding").each(function(e){
+			var bucket = $(this).attr("title");
+			if(bucket!=="Categories" && bucket!=="Tags"){
+				bucketNames.push(bucket);
+			}
+			
+		});
+		
+		var identifiers = ["extNavDimensions","extNavAcoustics","extNavAttributes","extNavMeasures"];
+		var bucketsAndIdentifiers = {
+			buckets:bucketNames,
+			"identifiers":identifiers
+		}
+		return bucketsAndIdentifiers;
+	};
+
 //create a class to represent the different select2 objects we wil use to represent the folder groups
 function folderGroup(group,identifier){
 	this.f_group = group;
@@ -503,6 +526,17 @@ function navManager()
 	this.rigth = $('#ci_forward');
 
 	this.rigth.on('click',function(){
+
+		if(!navManager.prototype.allBucketsLoaded()){
+			var bucketsAndIdentifiers = uiManager.prototype.getBucketNamesAndIdentifier();
+			bucketsAndIdentifiers.buckets.forEach(function(e,i,a){
+
+				var bucket = new folderGroup(e,bucketsAndIdentifiers.identifiers[i]);
+				bucket.initOnClick(e.toUpperCase()+" QUICK SELECT");
+				bucket.cssSelect2();
+			});
+
+		}
 		selmanager.getCurrentSelBox().animate({width:'0%'},function(){
 
 			var folderGroupCountElementID =  navManager.prototype.getCallCountUIElement();
@@ -601,6 +635,10 @@ navManager.prototype.getCallCountUIElement = function(){
 navManager.prototype.getSelectElementID = function(){
 	return "#"+$('.select2:not(.hidden)').find('.select2-selection__rendered').attr('id').split('-')[1];
 };
+
+navManager.prototype.allBucketsLoaded = function(){
+	return $(".select2.select2-container").length >1;
+}
 
 
 
