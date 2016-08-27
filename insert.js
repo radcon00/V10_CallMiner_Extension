@@ -155,35 +155,24 @@ function uiManager() {
 			intervalHandleCats = setInterval(function(){
 
 				if($('ul.main-menu.nav').length>0){
-				var $navMenu = $('ul.main-menu.nav');
-				//console.log("adding the extension");
-				$navMenu.append(template);
-				self.addEventsforplus_minus();
-				self.setCssCatBB();		
-				self.setClickEventCatBB();
-				self.addEventForResponsiveElement();	
-				self.monitorWindowSize(); //this checks the window size and adjustes the css according to the current css properties.	
+					clearInterval(intervalHandleCats);
+					var $navMenu = $('ul.main-menu.nav');
+					//console.log("adding the extension");
+					$navMenu.append(template);
+					self.addEventsforplus_minus();
+					self.setCssCatBB();		
+					self.setClickEventCatBB();
+					self.addEventForResponsiveElement();	
+					self.monitorWindowSize(); //this checks the window size and adjustes the css according to the current css properties.	
 
-				//set up the additional select boxes for the other folder groups
-				var categories = new folderGroup("Categories","extNavBox");
-				categories.initOnClick("CATEGORY QUICK SELECT");
+					//set up the initial select2 box based on the categories folder because we no it's name wont change. This element will trigger the creation of the others.
+					var categories = new folderGroup("Categories","extNavBox");
+					categories.initOnClick("CATEGORY QUICK SELECT");		
+					categories.cssSelect2();
 
-				/*var dimensions = new folderGroup("Dimensions","extNavDimensions");
-				var acoustics = new folderGroup("Acoustics","extNavAcoustics");
-				var attributes = new folderGroup("Attributes", "extNavAttributes");
-				var measures = new folderGroup("Measures", "extNavMeasures");
-
-				categories.initOnClick("CATEGORY QUICK SELECT");
-				dimensions.initOnClick("DIMENSIONS QUICK SELECT");
-				acoustics.initOnClick("ACOUSTICS QUICK SELELCT");
-				attributes.initOnClick("ATTRIBUTES QUICK SELECT");
-				measures.initOnClick("MEASURES QUICK SELECT");*/
-
-				categories.cssSelect2();
-
-				//initialize the right and left navigation icons and adds their events.
-				var navsetup = new navManager();
-				clearInterval(intervalHandleCats);
+					//initialize the right and left navigation icons and adds their events.
+					var navsetup = new navManager();
+				
 
 			}},500);
 	};	
