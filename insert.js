@@ -7,6 +7,7 @@ var caretPostion=null;
 var template;
 var imageLocation;
 var selmanager = new sel2Manager();
+var bucketAndIdentifierKeyValuePairs = {}; //use to get the folder name when the plus/minus button is pressed
 
 var extension  = function(){
 	if($("body.erk-unselectable").length>0){
@@ -255,7 +256,8 @@ function uiManager() {
 				$cats.filter('div[title="' + textSelected +'"]').click();
 			}
 			else{
-				folder = folder.split('Nav')[1];
+				//folder = folder.split('Nav')[1];
+				folder = bucketAndIdentifierKeyValuePairs[folder]
 				var $cats = folderGroup.prototype.getCurrentCategories(folder);
 				$cats.filter('div[title="' + textSelected +'"]').click();
 			}	
@@ -534,6 +536,11 @@ function navManager()
 				var bucket = new folderGroup(e,bucketsAndIdentifiers.identifiers[i]);
 				bucket.initOnClick(e.toUpperCase()+" QUICK SELECT");
 				bucket.cssSelect2();
+
+				//set the identifier-key and bucket-value pair for use later when we need to look up what folder the ballon is in
+				//split off the extension portion of the element ids so the keys will match the format of the variable in another part of the code
+				var key = bucketsAndIdentifiers.identifiers[i].split("ext")[1];
+				bucketAndIdentifierKeyValuePairs[key]=e;
 			});
 
 		}
@@ -581,6 +588,11 @@ function navManager()
 				var bucket = new folderGroup(e,bucketsAndIdentifiers.identifiers[i]);
 				bucket.initOnClick(e.toUpperCase()+" QUICK SELECT");
 				bucket.cssSelect2();
+
+				//set the identifier-key and bucket-value pair for use later when we need to look up what folder the ballon is in
+				//split off the extension portion of the element ids so the keys will match the format of the variable in another part of the code
+				var key = bucketsAndIdentifiers.identifiers[i].split("ext")[1];
+				bucketAndIdentifierKeyValuePairs[key]=e;
 			});
 
 		}
