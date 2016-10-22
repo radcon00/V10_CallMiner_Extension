@@ -10,7 +10,7 @@ var selmanager = new sel2Manager();
 var bucketAndIdentifierKeyValuePairs = {}; //use to get the folder name when the plus/minus button is pressed
 
 var extension  = function(){
-	if($("body.erk-unselectable").length>0){
+	if($("#main-content").length>0){
 			
 			var VTenDom = new V10dom();
 			
