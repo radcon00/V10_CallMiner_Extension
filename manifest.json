@@ -1,5 +1,5 @@
 {
-  "name": "CallMiner v10 Categories Navigator",
+  "name": "CallMiner v10 Categories Navigator tester",
   "version": "0.1.4",
   "manifest_version": 2,
   "description": "CallMiner category navigation and management tool",
@@ -39,9 +39,10 @@
       ],
       "css": [
         "src/inject/inject.css",
-        "src/inject/select2.css"
+        "src/inject/select2.css",
+        "js/chardin.js/chardinjs.css"
       ],
-      "js": ["js/jquery/jquery.min.js","js/node_modules/arrive/src/arrive.js",
+      "js": ["js/jquery/jquery.min.js","js/node_modules/arrive/src/arrive.js","js/chardin.js/chardinjs.js",
         "insert.js"
       ],
       "all_frames": true,

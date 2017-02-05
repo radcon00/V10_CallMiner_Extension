@@ -5,6 +5,8 @@ var catParent=[];
 var categoryList={};
 var caretPostion=null;
 var template;
+var playbookTemp;
+var playbookImage;
 var imageLocation;
 var selmanager = new sel2Manager();
 var bucketAndIdentifierKeyValuePairs = {}; //use to get the folder name when the plus/minus button is pressed
@@ -65,8 +67,14 @@ var V10dom = function(){
 				//get the html template data for insertion
 				template = data;
 			});
+
+		$.get(chrome.extension.getURL('Templates/playbook.html'),function(data){
+			//get the html playbook template data for insertion
+			playbookTemp = data;
+		});
 			//get the url of the image we want to use as an icon
 		imageLocation = chrome.extension.getURL('images/buildingblocks.png');
+		playbookImage = chrome.extension.getURL('images/cbp.jpg')
 	};
 
 	this.extCDNDependencies = function(){
@@ -163,7 +171,8 @@ function uiManager() {
 					self.setCssCatBB();		
 					self.setClickEventCatBB();
 					self.addEventForResponsiveElement();	
-					self.monitorWindowSize(); //this checks the window size and adjustes the css according to the current css properties.	
+					self.monitorWindowSize(); //this checks the window size and adjustes the css according to the current css properties.
+					self.addPlaybookBtn() //adds the button to use as the chardinjs trigger.	
 
 					//set up the initial select2 box based on the categories folder because we no it's name wont change. This element will trigger the creation of the others.
 					var categories = new folderGroup("Categories","extNavBox");
@@ -340,6 +349,13 @@ function uiManager() {
 
 	
 }
+
+uiManager.prototype.addPlaybookBtn = function()
+{
+	var p = $("li a[data-ng-click='nav.goToMyEureka()']").parent()
+	$(playbookTemp).insertAfter(p)
+	$("#playbook").attr('src',playbookImage)
+};
 
 uiManager.prototype.getBucketNamesAndIdentifier = function(){
 		var bucketNames = [];
