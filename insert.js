@@ -174,6 +174,9 @@ function uiManager() {
 					self.monitorWindowSize(); //this checks the window size and adjustes the css according to the current css properties.
 					self.addPlaybookBtn() //adds the button to use as the chardinjs trigger.	
 
+					
+
+
 					//set up the initial select2 box based on the categories folder because we no it's name wont change. This element will trigger the creation of the others.
 					var categories = new folderGroup("Categories","extNavBox");
 					categories.initOnClick("CATEGORY QUICK SELECT");		
@@ -355,6 +358,37 @@ uiManager.prototype.addPlaybookBtn = function()
 	var p = $("li a[data-ng-click='nav.goToMyEureka()']").parent()
 	$(playbookTemp).insertAfter(p)
 	$("#playbook").attr('src',playbookImage)
+	//set the click event
+	$("#playbook").click(function(){
+		
+		//test introJs
+		//check if the element is visable
+		if ($("div[title='Longest Contacts']").is(":visible")===true){
+			$("div[title='Longest Contacts']").attr("data-intro","Set Longest Contact Category as a filter");
+			$("div[title='Longest Contacts']").attr("data-step","3");
+			$(".search-button").attr("data-intro","Click the search button");
+			$(".search-button").attr("data-step","4");
+
+			$("div[title='Excessive Silence Block']").first().attr("data-intro","Does this category make up a large percentage of the returned calls? If yes, review the behavior categories for trending categories.");
+			$("div[title='Excessive Silence Block']").first().attr("data-step","5");
+		}			
+		
+		//check if the element is visable
+		if ($("span[title='Outliers']").is(":visible")===true){
+			$("span[title='Outliers']").attr("data-intro","Navigate to Longest Contact Category");
+			$("span[title='Outliers']").attr("data-step","2");
+		}
+
+		$("span[title='Categories']").attr("data-intro","Navigate to the outliers folder");
+		$("span[title='Categories']").attr("data-step","1");
+				
+		
+		//run introJs
+		introJs().start();
+	});
+
+	
+
 };
 
 uiManager.prototype.getBucketNamesAndIdentifier = function(){

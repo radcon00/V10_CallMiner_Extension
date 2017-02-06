@@ -40,9 +40,10 @@
       "css": [
         "src/inject/inject.css",
         "src/inject/select2.css",
-        "js/chardin.js/chardinjs.css"
+        "js/intro.js-2.4.0/introjs.css",
+        "js/intro.js-2.4.0/themes/introjs-modern.css"
       ],
-      "js": ["js/jquery/jquery.min.js","js/node_modules/arrive/src/arrive.js","js/chardin.js/chardinjs.js",
+      "js": ["js/jquery/jquery.min.js","js/node_modules/arrive/src/arrive.js","js/intro.js-2.4.0/intro.js",
         "insert.js"
       ],
       "all_frames": true,
