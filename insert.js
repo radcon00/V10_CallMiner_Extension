@@ -283,6 +283,25 @@ function uiManager() {
 				
 				caretPostion = $(this).prop('selectionStart');
 			});
+
+			//monitor the creation of auto complete elements to disable their click event
+			$('auto-complete').arrive("completion-item div",function(){
+				
+				//remove the click event to allow multi selection using script injection
+				var injectCode = '$("completion-item div").off("click");'				
+				var script = document.createElement('script');
+				script.textContent = injectCode;
+				(document.head||document.documentElement).appendChild(script);
+				script.remove();
+				
+
+				//add an attribute when clicked
+				$(this).click(function(event){	
+					event.stopPropagation();				
+					$(event.target).attr("selected","yes");
+					$(event.target).append("<div class='checker' style='float: right;'><span>✔</span></div>");
+				});
+			});
 			
 		},500);
 		
@@ -295,7 +314,7 @@ function uiManager() {
 		var setintHandle = setInterval(function()
 		{
 			
-			if($('button[ng-click="addComponent();"]').length===0){return;}
+			if($('button[data-ng-click="addComponent()"]').length===0){return;}
 			
 			clearInterval(setintHandle);
 			//monitor this element for additions to it's dom. We are looking for the addition of a textarea element.
@@ -306,6 +325,19 @@ function uiManager() {
 			$('.searchBox').focusout(function name() {
 				
 				caretPostion = $(this).prop('selectionStart');
+			});
+			
+			//monitor the creation of auto complete elements to disable their click event
+			$('auto-complete').arrive("completion-item div",function(){
+				
+				//remove the click event to allow multi selection
+				$("completion-item div").unbind("click");
+
+				//add an attribute when clicked
+				$("completion-item div").click(function(event){
+					$(event.target).attr("selected","yes");
+					$(event.target).append("<div class='checker' style='float: right;'><span>✔</span></div>");
+				});
 			});
 
 		},500);
