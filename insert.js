@@ -133,6 +133,10 @@ V10dom.prototype.syntaxSelectionAI = function(event){
 		}); //this will return the suggested text that was selected
 
 		//filter the strings to only return two word phrases
+		var threeWordPhrase = completionPhrase.filter(function(x){
+			return x[0].split(" ").length > 2;
+		});
+
 		var twoWordPhrases = completionPhrase.filter(function(x){
 			return x[0].split(" ").length > 1;
 		});
@@ -152,6 +156,7 @@ V10dom.prototype.syntaxSelectionAI = function(event){
 		var secondWord = twoWordPhrases.map(function(x){
 			return x[0].split(" ")[1];
 		});
+		
 
 		//merge first words together to create a valid search string
 		if(secondWord.length>1){
@@ -161,7 +166,36 @@ V10dom.prototype.syntaxSelectionAI = function(event){
 			var secondWordSyntax = secondWord[0];
 		}
 
-		$(event.target).val('"'+ firstWordSyntax + " "+ secondWordSyntax + '"' );
+		//three word phase creation
+		var thirdWordSyntax = "";
+		if(threeWordPhrase.length> 0){
+			var two_three_portion = threeWordPhrase.map(function(x){
+				return x[0].split(" ").splice(1,2);
+			});
+			var just2 = two_three_portion.map(function(x){return x[0];});
+			var just3 = two_three_portion.map(function(x){return x[1];});
+
+			if(just2.length>1){
+				var twoSyntax = just2.join("|");
+			}
+			else{
+				var twoSyntax = just2[0];
+			}
+			
+			if(just3.length>1){
+				var threeSyntax = just3.join("|");
+			}
+			else{
+				var threeSyntax = just3[0];
+			}
+
+			thirdWordSyntax = " OR " + '"'+ firstWordSyntax+ " " + twoSyntax + " "+ threeSyntax + '"';
+
+		}
+
+		//combine the syntax together to represent the search string
+
+		$(event.target).val('"'+ firstWordSyntax + " "+ secondWordSyntax + '"' + thirdWordSyntax );
 
 		//inject the code to fire the change event on the search box
 		var injectCode = '$("#searchBox").trigger("change");'				
