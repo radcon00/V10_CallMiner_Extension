@@ -107,6 +107,71 @@ V10dom.prototype.syntaxShortCuts= function name()
 
 };
 
+V10dom.prototype.syntaxSelectionAI = function(event){
+	//This function will create a search string based on the users selection from the auto-suggestions
+	var $suggestions = $("completion-item div");
+	if($suggestions.length>0){
+		//checking here if the data tag got placed on the dive or the span
+		 if($("completion-item div span[selected]").parent().length>0){
+			var $selected = $("completion-item div span[selected]").parent();
+		}
+		else{
+			var $selected = $("completion-item div[selected]");
+		}
+			
+		var typed = $selected.toArray().map(function(x){
+			var result = $(x).find("span.typed.ng-binding").toArray().map(function(y){
+				return $(y).text();
+			}); 
+			return result;
+		})[0]; //this will return the first portion of the word that the user typed
+		var completionPhrase = $selected.toArray().map(function(x){
+			var result = $(x).find("span.completion-phrase").toArray().map(function(y){
+				return typed+$(y).text();
+			}); 
+			return result;
+		}); //this will return the suggested text that was selected
+
+		//filter the strings to only return two word phrases
+		var twoWordPhrases = completionPhrase.filter(function(x){
+			return x[0].split(" ").length > 1;
+		});
+
+		var firstWord = twoWordPhrases.map(function(x){
+			return x[0].split(" ")[0];
+		}).unique();
+
+		//merge first words together to create a valid search string
+		if(firstWord.length>1){
+			var firstWordSyntax = firstWord.join("|");
+		}
+		else{
+			var firstWordSyntax = firstWord[0];
+		}
+
+		var secondWord = twoWordPhrases.map(function(x){
+			return x[0].split(" ")[1];
+		}).unique();
+
+		//merge first words together to create a valid search string
+		if(secondWord.length>1){
+			var secondWordSyntax = secondWord.join("|");
+		}
+		else{
+			var secondWordSyntax = secondWord[0];
+		}
+
+		$(event.target).val('"'+ firstWordSyntax + " "+ secondWordSyntax + '"' );
+		event.target.onchange();
+	};
+};
+
+//Quick array extension to return unique values
+Array.prototype.unique = function() {
+	return this.filter(function (value, index, self) { 
+	  return self.indexOf(value) === index;
+	});
+  };
 
 		
 
@@ -297,11 +362,20 @@ function uiManager() {
 
 				//add an attribute when clicked
 				$(this).click(function(event){	
-					event.stopPropagation();				
+									
 					$(event.target).attr("selected","yes");
-					$(event.target).append("<div class='checker' style='float: right;'><span>✔</span></div>");
+					//confirm elimanate adding the checkmark to the span instead of the div.
+					if(event.target.nodeName==="SPAN"){
+						$(event.target).parent().append("<div class='checker' style='float: right;'><span>✔</span></div>");
+					}
+					else{
+						$(event.target).append("<div class='checker' style='float: right;'><span>✔</span></div>");
+					}
+					
 				});
 			});
+
+			$("#searchBox").click(V10dom.prototype.syntaxSelectionAI);
 			
 		},500);
 		
