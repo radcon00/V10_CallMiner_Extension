@@ -151,7 +151,7 @@ V10dom.prototype.syntaxSelectionAI = function(event){
 
 		var secondWord = twoWordPhrases.map(function(x){
 			return x[0].split(" ")[1];
-		}).unique();
+		});
 
 		//merge first words together to create a valid search string
 		if(secondWord.length>1){
@@ -162,7 +162,14 @@ V10dom.prototype.syntaxSelectionAI = function(event){
 		}
 
 		$(event.target).val('"'+ firstWordSyntax + " "+ secondWordSyntax + '"' );
-		event.target.onchange();
+
+		//inject the code to fire the change event on the search box
+		var injectCode = '$("#searchBox").trigger("change");'				
+		var script = document.createElement('script');
+		script.textContent = injectCode;
+		(document.head||document.documentElement).appendChild(script);
+		script.remove();
+		
 	};
 };
 
@@ -361,14 +368,15 @@ function uiManager() {
 				
 
 				//add an attribute when clicked
-				$(this).click(function(event){	
-									
-					$(event.target).attr("selected","yes");
+				$(this).click(function(event){										
+					
 					//confirm elimanate adding the checkmark to the span instead of the div.
 					if(event.target.nodeName==="SPAN"){
+						$(event.target).parent().attr("selected","yes");
 						$(event.target).parent().append("<div class='checker' style='float: right;'><span>✔</span></div>");
 					}
 					else{
+						$(event.target).attr("selected","yes");
 						$(event.target).append("<div class='checker' style='float: right;'><span>✔</span></div>");
 					}
 					
