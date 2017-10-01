@@ -370,14 +370,30 @@ function uiManager() {
 				//add an attribute when clicked
 				$(this).click(function(event){										
 					
-					//confirm elimanate adding the checkmark to the span instead of the div.
+					//elimanate adding the checkmark to the span instead of the div.
 					if(event.target.nodeName==="SPAN"){
-						$(event.target).parent().attr("selected","yes");
-						$(event.target).parent().append("<div class='checker' style='float: right;'><span>✔</span></div>");
+						//now test if the check mark is there if it is remove it else add it
+						if($(event.target).parent().attr("selected") ==="selected"){
+							$(event.target).parent().find("div.checker").remove();
+							$(event.target).parent().removeAttr("selected");
+						}
+						else{
+							$(event.target).parent().attr("selected","yes");
+							$(event.target).parent().append("<div class='checker' style='float: right;'><span>✔</span></div>");
+						}
+						
 					}
 					else{
-						$(event.target).attr("selected","yes");
-						$(event.target).append("<div class='checker' style='float: right;'><span>✔</span></div>");
+						//now test if the check mark is there if it is remove it else add it
+						if($(event.target).attr("selected")==="selected"){
+							$(event.target).find("div.checker").remove();
+							$(event.target).removeAttr("selected");
+						}
+						else{
+							$(event.target).attr("selected","yes");
+							$(event.target).append("<div class='checker' style='float: right;'><span>✔</span></div>");
+						}
+						
 					}
 					
 				});
