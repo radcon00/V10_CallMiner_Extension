@@ -194,8 +194,20 @@ V10dom.prototype.syntaxSelectionAI = function(event){
 		}
 
 		//combine the syntax together to represent the search string
+		//but first you need to identify if there is text in the search box this needs to be added to or if you need to replace it
+		var typedText = $("span.typed").first().text();
+		var currentSearchText = $("#searchBox").val();
 
-		$(event.target).val('"'+ firstWordSyntax + " "+ secondWordSyntax + '"' + thirdWordSyntax );
+		if(currentSearchText.length - typedText===1){//replace logic
+			$(event.target).val('"'+ firstWordSyntax + " "+ secondWordSyntax + '"' + thirdWordSyntax );
+		}
+		else{//add to existing search string logic
+			var newSearchString = currentSearchText.slice(0,-typedText.length);
+			var searchSuggestionSyntax = newSearchString +'"'+ firstWordSyntax + " "+ secondWordSyntax + '"' + thirdWordSyntax ;
+			$(event.target).val(searchSuggestionSyntax.replace('""','"'));
+		}
+
+		
 
 		//inject the code to fire the change event on the search box
 		var injectCode = '$("#searchBox").trigger("change");'				
