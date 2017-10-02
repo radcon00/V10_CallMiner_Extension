@@ -160,7 +160,7 @@ V10dom.prototype.syntaxSelectionAI = function(event){
 
 		//merge first words together to create a valid search string
 		if(secondWord.length>1){
-			var secondWordSyntax = secondWord.join("|");
+			var secondWordSyntax = secondWord.unique().join("|");
 		}
 		else{
 			var secondWordSyntax = secondWord[0];
@@ -176,14 +176,14 @@ V10dom.prototype.syntaxSelectionAI = function(event){
 			var just3 = two_three_portion.map(function(x){return x[1];});
 
 			if(just2.length>1){
-				var twoSyntax = just2.join("|");
+				var twoSyntax = just2.unique().join("|");
 			}
 			else{
 				var twoSyntax = just2[0];
 			}
 			
 			if(just3.length>1){
-				var threeSyntax = just3.join("|");
+				var threeSyntax = just3.unique().join("|");
 			}
 			else{
 				var threeSyntax = just3[0];
