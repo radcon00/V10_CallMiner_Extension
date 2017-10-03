@@ -196,27 +196,68 @@ V10dom.prototype.syntaxSelectionAI = function(event){
 		//combine the syntax together to represent the search string
 		//but first you need to identify if there is text in the search box this needs to be added to or if you need to replace it
 		var typedText = $("span.typed").first().text();
-		var currentSearchText = $("#searchBox").val();
+		//var currentSearchText = $("#searchBox").val();
+		var currentSearchText = $(event.target).val();
 
 		if(currentSearchText.length - typedText===1){//replace logic
 			$(event.target).val('"'+ firstWordSyntax + " "+ secondWordSyntax + '"' + thirdWordSyntax );
+			event.stopPropagation();
 		}
 		else{//add to existing search string logic
 			var newSearchString = currentSearchText.slice(0,-typedText.length);
 			var searchSuggestionSyntax = newSearchString +'"'+ firstWordSyntax + " "+ secondWordSyntax + '"' + thirdWordSyntax ;
 			$(event.target).val(searchSuggestionSyntax.replace('""','"'));
+			event.stopPropagation();
 		}
 
 		
 
 		//inject the code to fire the change event on the search box
-		var injectCode = '$("#searchBox").trigger("change");'				
+		if ($(event.target).attr("id")==="searchBox") {
+			var injectCode = '$("#searchBox").trigger("change");';
+		} else {
+			var injectCode = '$("textarea.search-box").trigger("change");';
+		}
+						
 		var script = document.createElement('script');
 		script.textContent = injectCode;
 		(document.head||document.documentElement).appendChild(script);
 		script.remove();
 		
 	};
+};
+
+V10dom.prototype.autoCompleteManager = function(target){
+	//this function handles all of the autocomplete updater logic
+	$(target).click(function(event){										
+		
+		//elimanate adding the checkmark to the span instead of the div.
+		if(event.target.nodeName==="SPAN"){
+			//now test if the check mark is there if it is remove it else add it
+			if($(event.target).parent().attr("selected") ==="selected"){
+				$(event.target).parent().find("div.checker").remove();
+				$(event.target).parent().removeAttr("selected");
+			}
+			else{
+				$(event.target).parent().attr("selected","yes");
+				$(event.target).parent().append("<div class='checker' style='float: right;'><span>✔</span></div>");
+			}
+			
+		}
+		else{
+			//now test if the check mark is there if it is remove it else add it
+			if($(event.target).attr("selected")==="selected"){
+				$(event.target).find("div.checker").remove();
+				$(event.target).removeAttr("selected");
+			}
+			else{
+				$(event.target).attr("selected","yes");
+				$(event.target).append("<div class='checker' style='float: right;'><span>✔</span></div>");
+			}
+			
+		}
+		
+	});
 };
 
 //Quick array extension to return unique values
@@ -412,9 +453,9 @@ function uiManager() {
 				(document.head||document.documentElement).appendChild(script);
 				script.remove();
 				
-
+				V10dom.prototype.autoCompleteManager(this);
 				//add an attribute when clicked
-				$(this).click(function(event){										
+				/*$(this).click(function(event){										
 					
 					//elimanate adding the checkmark to the span instead of the div.
 					if(event.target.nodeName==="SPAN"){
@@ -442,9 +483,9 @@ function uiManager() {
 						
 					}
 					
-				});
+				});*/
 			});
-
+			
 			$("#searchBox").click(V10dom.prototype.syntaxSelectionAI);
 			
 		},500);
@@ -463,27 +504,32 @@ function uiManager() {
 			clearInterval(setintHandle);
 			//monitor this element for additions to it's dom. We are looking for the addition of a textarea element.
 			$('#advancedSearchContainer').arrive("textarea.search-box",function(e){
-				$('.search-box').keyup(V10dom.prototype.syntaxShortCuts);});
-
-			//event handler for the search box focus out event. It will set the caretposition variable used in the function that adds the category syntax to the search box.
-			$('.searchBox').focusout(function name() {
-				
-				caretPostion = $(this).prop('selectionStart');
+				$('.search-box').keyup(V10dom.prototype.syntaxShortCuts);
+				$(".search-box").click(V10dom.prototype.syntaxSelectionAI);
+				//event handler for the search box focus out event. It will set the caretposition variable used in the function that adds the category syntax to the search box.
+				$('.search-box').focusout(function name() {
+					
+					caretPostion = $(this).prop('selectionStart');
+				});
+			
 			});
+
+			
 			
 			//monitor the creation of auto complete elements to disable their click event
-			$('auto-complete').arrive("completion-item div",function(){
+			$('#advancedSearchContainer').arrive("completion-item div",function(){
 				
-				//remove the click event to allow multi selection
-				$("completion-item div").unbind("click");
-
-				//add an attribute when clicked
-				$("completion-item div").click(function(event){
-					$(event.target).attr("selected","yes");
-					$(event.target).append("<div class='checker' style='float: right;'><span>✔</span></div>");
-				});
+				//remove the click event to allow multi selection using script injection
+				var injectCode = '$("completion-item div").off("click");'				
+				var script = document.createElement('script');
+				script.textContent = injectCode;
+				(document.head||document.documentElement).appendChild(script);
+				script.remove();
+				
+				V10dom.prototype.autoCompleteManager(this);
+				
 			});
-
+			
 		},500);
 	};
 
