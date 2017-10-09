@@ -109,7 +109,7 @@ V10dom.prototype.syntaxShortCuts= function name()
 
 V10dom.prototype.syntaxSelectionAI = function(event){
 	//This function will create a search string based on the users selection from the auto-suggestions
-	var $suggestions = $("completion-item div");
+	var $suggestions = $("completion-item div[selected]");
 	if($suggestions.length>0){
 		//checking here if the data tag got placed on the dive or the span
 		 if($("completion-item div span[selected]").parent().length>0){
@@ -131,6 +131,14 @@ V10dom.prototype.syntaxSelectionAI = function(event){
 			}); 
 			return result;
 		}); //this will return the suggested text that was selected
+
+		//determine if this is a one word selection only exmple help|heal|hall
+		var oneWordOrs = completionPhrase.filter(function(x){
+			var index = x[0].indexOf(" ");
+			return index ===-1;
+		}).map(function(x){
+			return x;
+		});
 
 		//filter the strings to only return two word phrases
 		var threeWordPhrase = completionPhrase.filter(function(x){
@@ -201,13 +209,31 @@ V10dom.prototype.syntaxSelectionAI = function(event){
 
 		if(currentSearchText.length - typedText===1){//replace logic
 			$(event.target).val('"'+ firstWordSyntax + " "+ secondWordSyntax + '"' + thirdWordSyntax );
-			event.stopPropagation();
+			
 		}
 		else{//add to existing search string logic
 			var newSearchString = currentSearchText.slice(0,-typedText.length);
-			var searchSuggestionSyntax = newSearchString +'"'+ firstWordSyntax + " "+ secondWordSyntax + '"' + thirdWordSyntax ;
-			$(event.target).val(searchSuggestionSyntax.replace('""','"'));
-			event.stopPropagation();
+			if(firstWordSyntax||secondWordSyntax){//make sure that there is a value for the first or the second word-means search phrases were selected
+
+				//add the one word ORs if the user specifies it
+				if(oneWordOrs.length>0){
+					var searchSuggestionSyntaxplusOnWord = "(" + oneWordOrs.join("|")+ ")";
+					var searchSuggestionSyntax = newSearchString +'"'+ firstWordSyntax + " "+ secondWordSyntax + '"' + thirdWordSyntax + " OR "+ searchSuggestionSyntaxplusOnWord;
+					$(event.target).val(searchSuggestionSyntax.replace('""','"'));
+				}else{//no one words present
+					var searchSuggestionSyntax = newSearchString +'"'+ firstWordSyntax + " "+ secondWordSyntax + '"' + thirdWordSyntax ;
+					$(event.target).val(searchSuggestionSyntax.replace('""','"'));
+				}
+				
+			}
+			else{
+				if (oneWordOrs.length>1){
+					var searchSuggestionSyntax = newSearchString + oneWordOrs.join("|");
+					$(event.target).val(searchSuggestionSyntax);
+				}
+			}
+			
+			
 		}
 
 		
