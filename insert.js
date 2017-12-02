@@ -10,6 +10,16 @@ var playbookImage;
 var imageLocation;
 var selmanager = new sel2Manager();
 var bucketAndIdentifierKeyValuePairs = {}; //use to get the folder name when the plus/minus button is pressed
+//these global variables are used to create the id for the filter buttons.
+var globalFolder;
+var globalText;
+var globalBucket;
+var includeFilterText = "_includeFilterBtn";
+var excludeFilterText = "_excludeFilterBtn";
+var globalBucketMap ={
+	"extNavBox":"Categories"
+};
+
 
 var extension  = function(){
 	if($("#main-content").length>0){
@@ -406,22 +416,13 @@ function uiManager() {
        //this adds or removes the category from the search filters
 	   	var self = this;
 		$('#ci_plusContainer').on('click',function(e){	
-			self.selectedCatClick();
-			var $elBubble = $('.ballon-container:not(.ng-hide)').find('.fa-plus-circle');
-			if($elBubble.length===1){
-				$('.ballon-container:not(.ng-hide)').find('.fa-plus-circle').click()
-			}
-			//chose the second item in the list it will be the plus element.
-			$('ul.ballon-container[ng-show="item.showIncludeExclude"]').not('.ng-hide').find('.fa-plus-circle').eq(1).click()
+			var categoryFilterId = globalBucketMap[globalBucket]+"_"+globalFolder+"_"+globalText+includeFilterText;
+			$("i[id='"+categoryFilterId+"']").click();
 		});
 
 		$('#ci_minusContainer').on('click',function(e){
-			self.selectedCatClick();
-			var $elBubble = $('ul.ballon-container[ng-show="item.showIncludeExclude"]').not('.ng-hide').find('.fa-minus-circle');
-			if($elBubble.length ===1){
-				$('.ballon-container:not(.ng-hide)').find('.fa-minus-circle').click();
-			}
-			$('ul.ballon-container[ng-show="item.showIncludeExclude"]').not('.ng-hide').find('.fa-minus-circle').eq(1).click();
+			var categoryFilterId = globalBucketMap[globalBucket]+"_"+globalFolder+"_"+globalText+excludeFilterText;
+			$("i[id='"+categoryFilterId+"']").click();
 		});
 	};
 
@@ -662,6 +663,7 @@ function folderGroup(group,identifier){
 	this.f_group = group;
 	this.selectElement = identifier;
 	this.$sel2Instance;
+	globalBucketMap[identifier]=group;
 	this.setFolderMembers = function(){
 
 		var $members = this.getFolderGroupMembers(this.f_group); //this is the parent bucket
@@ -709,7 +711,10 @@ function folderGroup(group,identifier){
 		var self = this;
 		$(elId).on("change",function (e) {
 			var textSelected = $(elId +' option:selected').text();
-			var parentFolder = $(elId +' option:selected').val(); //this is needed to specify what folder group it belongs to 
+			var parentFolder = $(elId +' option:selected').val(); //this is needed to specify what folder group it belongs to
+			globalFolder = parentFolder;
+			globalText = textSelected;
+			globalBucket = elId.split("#")[1]; 
 			var $parentBucketelement =  $("span[data-ng-bind='::summaryContainer.uiDisplayName']:contains('"+ parentFolder+"')").filter(function(){return $(this).html()===parentFolder}) //use this to locate the category call count in the next line 
 			if (textSelected !== "") {
 				//var $cats = self.getFolderGroupMembers(self.f_group);
