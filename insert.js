@@ -228,7 +228,7 @@ V10dom.prototype.syntaxSelectionAI = function(event){
 			}
 			else{
 				if (oneWordOrs.length>1){
-					var searchSuggestionSyntax = newSearchString + oneWordOrs.join("|");
+					var searchSuggestionSyntax = "("+ newSearchString + oneWordOrs.join("|") + ")";
 					$(event.target).val(searchSuggestionSyntax);
 				}
 			}
@@ -357,7 +357,7 @@ function uiManager() {
 					self.setClickEventCatBB();
 					self.addEventForResponsiveElement();	
 					self.monitorWindowSize(); //this checks the window size and adjustes the css according to the current css properties.
-					self.addPlaybookBtn() //adds the button to use as the chardinjs trigger.	
+					//self.addPlaybookBtn() //adds the button to use as the chardinjs trigger.	
 
 					
 
@@ -641,7 +641,7 @@ uiManager.prototype.addPlaybookBtn = function()
 
 uiManager.prototype.getBucketNamesAndIdentifier = function(){
 		var bucketNames = [];
-		$("li.angular-ui-tree-node.ng-scope").find("a[ng-click] div.tree-label span.ng-binding").each(function(e){
+		$("span.truncate.panel-heading-label").each(function(e){
 			var bucket = $(this).attr("title");
 			if(bucket!=="Categories" && bucket!=="Tags"){
 				bucketNames.push(bucket);
@@ -664,12 +664,12 @@ function folderGroup(group,identifier){
 	this.$sel2Instance;
 	this.setFolderMembers = function(){
 
-		var $members = this.getFolderGroupMembers(this.f_group);
-		var $sel2 = $('#'+ this.selectElement);
+		var $members = this.getFolderGroupMembers(this.f_group); //this is the parent bucket
+		var $sel2 = $('#'+ this.selectElement); //this is the select 2 box that represents it
 		var self = this;
 		$members.each(function(i,e){
 			var catName = $(e).html();
-			var folderGroup = $(e).parents('div.row:not(#sidebar)').prev().find('span[title]').html();
+			var folderGroup = $(e).parent().parent().parent().parent().prev().find("span.ng-binding").first().html();
 			var optionGroup = "<optgroup label='"+folderGroup+"' id='"+self.f_group+"-"+folderGroup+"'></optgroup>";
 			var option = "<option value='" + folderGroup +"'>"+catName + "</option>"; 
 			if($sel2.find('optgroup[id="'+self.f_group+"-"+folderGroup+'"]').length===0){
@@ -689,7 +689,7 @@ function folderGroup(group,identifier){
 
 	this.getFolderGroupMembers= function(folder){
 
-		var members = $('a').find("span[title='"+ folder +"']").parents("li").find("div .value-item");
+		var members = $("span[title='"+ folder +"']").parent().next().find("td.truncate.ng-binding");
 		return members;
 	};
 
@@ -709,11 +709,12 @@ function folderGroup(group,identifier){
 		var self = this;
 		$(elId).on("change",function (e) {
 			var textSelected = $(elId +' option:selected').text();
-			
+			var parentFolder = $(elId +' option:selected').val(); //this is needed to specify what folder group it belongs to 
+			var $parentBucketelement =  $("span[data-ng-bind='::summaryContainer.uiDisplayName']:contains('"+ parentFolder+"')").filter(function(){return $(this).html()===parentFolder}) //use this to locate the category call count in the next line 
 			if (textSelected !== "") {
-				var $cats = self.getFolderGroupMembers(self.f_group);
-				$cats.filter('div[title="' + textSelected +'"]').click()
-				self.setCallCount(textSelected,$cats);
+				//var $cats = self.getFolderGroupMembers(self.f_group);
+				//$cats.filter('div[title="' + textSelected +'"]').click()
+				self.setCallCount(textSelected,$parentBucketelement);
 				$('#extNavDetails').removeClass("hidden");
 				$('#ci_plusMinusContainer').removeClass('hidden');
 				
@@ -754,12 +755,11 @@ function folderGroup(group,identifier){
 		});
 	};
 	
-	this.setCallCount = function(catText,cats){
-		var $catEl = cats;
-
+	this.setCallCount = function(catText,$folder){
+		
 		//this find the cat the looks at its parent container then looks for the span for call count	
 		var elID = navManager.prototype.getCallCountUIElement();		
-		var count = $catEl.filter('div[title="' + catText +'"]').parent().find('span[ng-show="::item.ItemCount >= 0"]').html(); 
+		var count = $folder.parent().parent().next().find("td.truncate.ng-binding[title='"+catText+"']").next().html()
 		$(elID).html(count);
 	};
 	
