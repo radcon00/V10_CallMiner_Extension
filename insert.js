@@ -416,13 +416,29 @@ function uiManager() {
        //this adds or removes the category from the search filters
 	   	var self = this;
 		$('#ci_plusContainer').on('click',function(e){	
-			var categoryFilterId = globalBucketMap[globalBucket]+"_"+globalFolder+"_"+globalText+includeFilterText;
-			$("i[id='"+categoryFilterId+"']").click();
+			if(globalFolder.split(" ").length < 3){
+				var categoryFilterId = globalBucketMap[globalBucket]+"_"+globalFolder.split(" ").join("")+"_"+globalText+includeFilterText;//i had to add split join to account for when the folder name has a space in it.
+				$("i[id='"+categoryFilterId+"']").click();
+			}
+			else{//you have to add the folder split and join at the second word because of the way the ui handles folder names with space that are longer than 2 words
+				var updatedGlobalFolder = globalFolder.split(" ").splice(0,2).join("") + " "+ globalFolder.split(" ").splice(2).join(" ");
+				var categoryFilterId = globalBucketMap[globalBucket]+"_"+updatedGlobalFolder+"_"+globalText+includeFilterText;
+				$("i[id='"+categoryFilterId+"']").click();
+			}
+			
 		});
 
 		$('#ci_minusContainer').on('click',function(e){
-			var categoryFilterId = globalBucketMap[globalBucket]+"_"+globalFolder+"_"+globalText+excludeFilterText;
-			$("i[id='"+categoryFilterId+"']").click();
+			if(globalFolder.split(" ").length < 3){
+				var categoryFilterId = globalBucketMap[globalBucket]+"_"+globalFolder.split(" ").join("")+"_"+globalText+excludeFilterText;//i had to add split join to account for when the folder name has a space in it.
+				$("i[id='"+categoryFilterId+"']").click();
+			}
+			else{//you have to add the folder split and join at the second word because of the way the ui handles folder names with space that are longer than 2 words
+				var updatedGlobalFolder = globalFolder.split(" ").splice(0,2).join("") + " "+ globalFolder.split(" ").splice(2).join(" ");
+				var categoryFilterId = globalBucketMap[globalBucket]+"_"+updatedGlobalFolder+"_"+globalText+excludeFilterText;
+				$("i[id='"+categoryFilterId+"']").click();
+			}
+			
 		});
 	};
 
