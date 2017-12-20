@@ -373,6 +373,9 @@ function uiManager() {
 
 
 					//set up the initial select2 box based on the categories folder because we no it's name wont change. This element will trigger the creation of the others.
+					//since some of the categories are hidden in the UI the next line of code will open on the hidden categories for the category select 2 box to extract
+					$("i[class*='fa ng-scope fa-angle-double-']").click()
+					
 					var categories = new folderGroup("Categories","extNavBox");
 					categories.initOnClick("CATEGORY QUICK SELECT");		
 					categories.cssSelect2();
@@ -485,7 +488,7 @@ function uiManager() {
 				
 				caretPostion = $(this).prop('selectionStart');
 			});
-
+			//turn on
 			//monitor the creation of auto complete elements to disable their click event
 			$('auto-complete').arrive("completion-item div",function(){
 				
@@ -497,39 +500,10 @@ function uiManager() {
 				script.remove();
 				
 				V10dom.prototype.autoCompleteManager(this);
-				//add an attribute when clicked
-				/*$(this).click(function(event){										
-					
-					//elimanate adding the checkmark to the span instead of the div.
-					if(event.target.nodeName==="SPAN"){
-						//now test if the check mark is there if it is remove it else add it
-						if($(event.target).parent().attr("selected") ==="selected"){
-							$(event.target).parent().find("div.checker").remove();
-							$(event.target).parent().removeAttr("selected");
-						}
-						else{
-							$(event.target).parent().attr("selected","yes");
-							$(event.target).parent().append("<div class='checker' style='float: right;'><span>✔</span></div>");
-						}
-						
-					}
-					else{
-						//now test if the check mark is there if it is remove it else add it
-						if($(event.target).attr("selected")==="selected"){
-							$(event.target).find("div.checker").remove();
-							$(event.target).removeAttr("selected");
-						}
-						else{
-							$(event.target).attr("selected","yes");
-							$(event.target).append("<div class='checker' style='float: right;'><span>✔</span></div>");
-						}
-						
-					}
-					
-				});*/
+				
 			});
-			
-			$("#searchBox").click(V10dom.prototype.syntaxSelectionAI);
+			//turn on
+			$("#searchBox").click(V10dom.prototype.syntaxSelectionAI); 
 			
 		},500);
 		
@@ -560,6 +534,7 @@ function uiManager() {
 			
 			
 			//monitor the creation of auto complete elements to disable their click event
+			//turn on
 			$('#advancedSearchContainer').arrive("completion-item div",function(){
 				
 				//remove the click event to allow multi selection using script injection
