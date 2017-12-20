@@ -373,8 +373,7 @@ function uiManager() {
 
 
 					//set up the initial select2 box based on the categories folder because we no it's name wont change. This element will trigger the creation of the others.
-					//since some of the categories are hidden in the UI the next line of code will open on the hidden categories for the category select 2 box to extract
-					$("i[class*='fa ng-scope fa-angle-double-']").click()
+					
 					
 					var categories = new folderGroup("Categories","extNavBox");
 					categories.initOnClick("CATEGORY QUICK SELECT");		
@@ -746,6 +745,8 @@ function folderGroup(group,identifier){
 		//this will load the select2 with memberinfo when it opens first
 		$('#'+ self.selectElement).on("select2:opening",function(e) {
 		if ($('#'+ self.selectElement).children('option').length<2) {
+			//since some of the categories are hidden in the UI the next line of code will open on the hidden categories for the category select 2 box to extract
+			$("i[class*='fa ng-scope fa-angle-double-']").click()
 			self.setFolderMembers();
 		}
 		});
